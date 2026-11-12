@@ -1,0 +1,66 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default-deny catch-all (Pillar 1)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isTeacher() {
+      return (request.auth != null && (
+        request.auth.token.email == 'muhammedmuzamiljaan@gmail.com' ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      ));
+    }
+
+    // Exam Documents
+    match /exams/{examId} {
+      allow get, list: if isValidId(examId);
+      allow create, update, delete: if isValidId(examId);
+
+      // Questions Subcollection
+      match /questions/{questionId} {
+        allow get, list: if isValidId(examId) && isValidId(questionId);
+        allow create, update, delete: if isValidId(examId) && isValidId(questionId);
+      }
+
+      // Student Sessions Subcollection (Live Answering & Progress)
+      match /sessions/{sessionId} {
+        allow get, list: if isValidId(examId) && isValidId(sessionId);
+        allow create: if isValidId(examId) && isValidId(sessionId)
+          && incoming().studentName is string && incoming().studentName.size() <= 128;
+        allow update: if isValidId(examId) && isValidId(sessionId);
+        allow delete: if isValidId(examId) && isValidId(sessionId);
+      }
+
+      // Submissions Subcollection
+      match /submissions/{submissionId} {
+        allow get, list: if isValidId(examId) && isValidId(submissionId);
+        allow create, update, delete: if isValidId(examId) && isValidId(submissionId);
+      }
+    }
+
+    // Historical Archives
+    match /history/{historyId} {
+      allow get, list: if isValidId(historyId);
+      allow create, update, delete: if isValidId(historyId);
+    }
+  }
+}

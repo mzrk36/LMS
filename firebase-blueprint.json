@@ -1,0 +1,120 @@
+{
+  "entities": {
+    "Exam": {
+      "title": "Exam",
+      "description": "Examination metadata, configuration, timer state and status",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "title": { "type": "string", "maxLength": 200 },
+        "totalQuestions": { "type": "number" },
+        "totalMarks": { "type": "number" },
+        "durationMinutes": { "type": "number" },
+        "status": { "type": "string", "enum": ["waiting", "active", "paused", "ended"] },
+        "remainingSeconds": { "type": "number" },
+        "totalDurationSeconds": { "type": "number" },
+        "leaderboardRevealed": { "type": "boolean" },
+        "solutionsRevealed": { "type": "boolean" },
+        "createdAt": { "type": "number" },
+        "endedAt": { "type": "number" }
+      },
+      "required": ["id", "title", "totalQuestions", "totalMarks", "status", "remainingSeconds"]
+    },
+    "Question": {
+      "title": "Question",
+      "description": "Individual multiple choice examination question",
+      "type": "object",
+      "properties": {
+        "id": { "type": "number" },
+        "category": { "type": "string", "maxLength": 100 },
+        "question": { "type": "string", "maxLength": 1000 },
+        "options": { "type": "object" },
+        "correctAnswer": { "type": "string", "enum": ["A", "B", "C", "D"] },
+        "explanation": { "type": "string", "maxLength": 1000 },
+        "marks": { "type": "number" }
+      },
+      "required": ["id", "category", "question", "options", "marks"]
+    },
+    "StudentSession": {
+      "title": "StudentSession",
+      "description": "Live student participant session tracking progress and answers",
+      "type": "object",
+      "properties": {
+        "sessionId": { "type": "string", "maxLength": 128 },
+        "studentName": { "type": "string", "maxLength": 128 },
+        "joinedAt": { "type": "number" },
+        "connectionStatus": { "type": "string", "enum": ["online", "offline"] },
+        "lastActive": { "type": "number" },
+        "currentQuestionIndex": { "type": "number" },
+        "answers": { "type": "object" },
+        "answeredCount": { "type": "number" },
+        "progressPercentage": { "type": "number" },
+        "submissionStatus": { "type": "string", "enum": ["waiting", "answering", "submitted"] },
+        "submittedAt": { "type": "number" },
+        "score": { "type": "number" },
+        "totalMarks": { "type": "number" },
+        "percentage": { "type": "number" },
+        "correctCount": { "type": "number" },
+        "incorrectCount": { "type": "number" },
+        "unansweredCount": { "type": "number" }
+      },
+      "required": ["sessionId", "studentName", "joinedAt", "connectionStatus", "submissionStatus"]
+    },
+    "Submission": {
+      "title": "Submission",
+      "description": "Evaluated final examination submission and score",
+      "type": "object",
+      "properties": {
+        "sessionId": { "type": "string", "maxLength": 128 },
+        "studentName": { "type": "string", "maxLength": 128 },
+        "score": { "type": "number" },
+        "totalMarks": { "type": "number" },
+        "percentage": { "type": "number" },
+        "correctCount": { "type": "number" },
+        "incorrectCount": { "type": "number" },
+        "unansweredCount": { "type": "number" },
+        "submittedAt": { "type": "number" },
+        "rank": { "type": "number" }
+      },
+      "required": ["sessionId", "studentName", "score", "totalMarks", "percentage", "submittedAt"]
+    },
+    "HistoricalExam": {
+      "title": "HistoricalExam",
+      "description": "Archived historical examination run and metrics",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "examId": { "type": "string", "maxLength": 64 },
+        "title": { "type": "string", "maxLength": 200 },
+        "date": { "type": "string", "maxLength": 100 },
+        "participantsCount": { "type": "number" },
+        "averageScore": { "type": "number" },
+        "highestScore": { "type": "number" },
+        "lowestScore": { "type": "number" }
+      },
+      "required": ["id", "examId", "title", "date", "participantsCount"]
+    }
+  },
+  "firestore": {
+    "/exams/{examId}": {
+      "schema": "#/entities/Exam",
+      "description": "Active or historical exam settings and status"
+    },
+    "/exams/{examId}/questions/{questionId}": {
+      "schema": "#/entities/Question",
+      "description": "MCQs for the exam"
+    },
+    "/exams/{examId}/sessions/{sessionId}": {
+      "schema": "#/entities/StudentSession",
+      "description": "Live student participant state and answers"
+    },
+    "/exams/{examId}/submissions/{submissionId}": {
+      "schema": "#/entities/Submission",
+      "description": "Evaluated submissions and scores"
+    },
+    "/history/{historyId}": {
+      "schema": "#/entities/HistoricalExam",
+      "description": "Permanently archived completed examinations"
+    }
+  }
+}

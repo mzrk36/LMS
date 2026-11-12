@@ -1,0 +1,6 @@
+{
+  "name": "GenZomate Live English Examination Portal",
+  "description": "Professional teacher-controlled live English examination platform with real-time student monitoring, question-by-question tracking, automated scoring, and instant leaderboard broadcast.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

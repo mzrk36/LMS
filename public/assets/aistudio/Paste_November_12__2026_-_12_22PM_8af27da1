@@ -1,0 +1,1124 @@
+# MASTER DEVELOPMENT PROMPT: GENZOMATE LIVE ENGLISH EXAMINATION PORTAL
+
+Act as a senior full-stack engineer, database architect, UI/UX designer and real-time application developer.
+
+Build a complete, functional, real-time English examination platform called **GenZomate Examination Portal**.
+
+This is a teacher-controlled examination platform. The teacher must be able to manage the test, monitor every student live, end the examination, review results privately and reveal the leaderboard to all students whenever desired.
+
+Do not create a static prototype. Build a genuinely working application.
+
+---
+
+# 1. TECHNOLOGY STACK
+
+Use:
+
+- Next.js with App Router
+- TypeScript
+- Tailwind CSS
+- Supabase PostgreSQL
+- Supabase Authentication
+- Supabase Realtime
+- Vercel deployment
+- Lucide React icons
+
+Use the latest stable compatible dependencies.
+
+The application must be compatible with free-tier hosting.
+
+# 2. DESIGN AND BRANDING
+
+Create a professional, modern educational examination platform.
+
+Design preferences:
+
+- Clean white background.
+- Jungle Green: #28AF60.
+- Burning Orange: #FF6933.
+- Dark green headings.
+- Subtle shadows and rounded cards.
+- Professional typography.
+- Smooth but lightweight animations.
+- Responsive desktop and mobile layouts.
+
+The interface should look like a proper examination management product, not a basic school website.
+
+Create two separate experiences:
+
+1. Teacher/Admin Dashboard.
+2. Student Examination Portal.
+
+# 3. APPLICATION ROUTES
+
+Create these routes:
+
+- / — Student portal.
+- /exam — Examination interface.
+- /leaderboard — Public leaderboard.
+- /results — Student results.
+- /admin/login — Teacher login.
+- /admin — Teacher dashboard.
+- /admin/exams — Examination management.
+- /admin/monitor — Live examination monitoring.
+- /admin/results — Private examination results.
+
+Protect all admin routes using proper server-side authentication and authorization.
+
+# 4. TEACHER AUTHENTICATION
+
+The teacher must have a secure login system.
+
+Use Supabase Auth.
+
+Only the authorized teacher account can:
+
+- Create examinations.
+- Edit questions.
+- Start examinations.
+- Pause examinations.
+- Resume examinations.
+- End examinations.
+- View private student results.
+- Reveal the leaderboard.
+- Manage historical examinations.
+
+Do not rely on hiding admin pages in the frontend. Enforce permissions on the backend using appropriate authorization checks and Supabase RLS.
+
+# 5. EXAMINATION CONTENT
+
+Create the first examination with the following details:
+
+Title: English Vocabulary & Expressions Test
+
+Total Questions: 30
+
+Question Type: Multiple Choice Questions (MCQs)
+
+Options per question: 4
+
+Marks per question: 1
+
+Total Marks: 30
+
+Negative Marking: None.
+
+Duration: Teacher configurable, default 30 minutes.
+
+The examination must use the following syllabus.
+
+## A. Vocabulary Words
+
+Conceal, Comprehensive, Attribute, Artificial, Crucial, Convince, Brief, Adequate.
+
+## B. Personality and Communication Vocabulary
+
+Ambitious, Adaptable, Resilient, Articulate, Assertive, Empathetic, Disciplined, Inquisitive, Humble, Optimistic.
+
+## C. Daily-Use Adjectives
+
+Overwhelmed, Intimidating, Reluctant, Exhausted, Frustrated.
+
+## D. Phrasal Verbs
+
+Wake up, Get up, Sit down, Stand up, Come in, Go out, Turn on, Turn off, Pick up, Put on.
+
+## E. Idioms
+
+Bite the bullet, In the long run, It slipped my mind, Easier said than done, Be up to something.
+
+## F. English Proverbs
+
+Actions Speak Louder Than Words, Better Late Than Never, Practice Makes Perfect, Honesty Is the Best Policy, Where There Is a Will, There Is a Way, Don't Judge a Book by Its Cover.
+
+## G. Additional Vocabulary and Expressions
+
+Weary, Furious, Heartbroken.
+
+## H. Sayings
+
+Speak good or remain silent.
+
+Cleanliness is half of faith.
+
+Love for your brother what you love for yourself.
+
+The best of you are the best in character.
+
+Actions are judged by intentions.
+
+Use these teaching materials as the examination's source of truth.
+
+# 6. EXACT 30 MCQs
+
+IMPORTANT:
+
+Insert the following 30 questions exactly as written, including their four options and correct answers.
+
+Do not replace them with automatically generated questions.
+
+Do not modify their meanings or introduce ambiguity.
+
+Store the answer key securely on the server.
+
+## QUESTION 1 — VOCABULARY
+
+What does the word "Conceal" mean?
+
+A. To avoid discussing something that causes embarrassment.
+
+B. To hide something deliberately so that others cannot discover or see it.
+
+C. To protect something from being damaged or disturbed.
+
+D. To keep something private by refusing to explain it.
+
+Correct Answer: B
+
+## QUESTION 2 — VOCABULARY
+
+A comprehensive report about a company's performance would most likely include:
+
+A. The most important findings without supporting details.
+
+B. A detailed discussion of one particular department.
+
+C. A complete examination of all important aspects of the company's performance.
+
+D. A summary of the company's achievements and future plans only.
+
+Correct Answer: C
+
+## QUESTION 3 — ATTRIBUTE
+
+Which sentence uses the word "Attribute" in the sense of a quality or characteristic?
+
+A. Patience is an important attribute of an effective teacher.
+
+B. Patience is an important achievement of an effective teacher.
+
+C. Patience is an important responsibility of an effective teacher.
+
+D. Patience is an important opportunity for an effective teacher.
+
+Correct Answer: A
+
+## QUESTION 4 — ARTIFICIAL
+
+Which situation best demonstrates something artificial?
+
+A. A flower growing naturally in a garden.
+
+B. A river flowing through a mountain valley.
+
+C. A wooden branch falling from a tree.
+
+D. A decorative flower manufactured from plastic.
+
+Correct Answer: D
+
+## QUESTION 5 — CRUCIAL
+
+A teacher discovers that a student has misunderstood an important concept before the final examination. Correcting that misunderstanding is crucial because:
+
+A. It might make the lesson slightly more interesting.
+
+B. It is extremely important for the student's understanding and performance.
+
+C. It could make the student finish the lesson earlier.
+
+D. It is one of several optional activities in the classroom.
+
+Correct Answer: B
+
+## QUESTION 6 — CONVINCE
+
+Sara wants her parents to allow her to attend an educational event. She presents strong reasons and successfully changes their minds.
+
+What did Sara do?
+
+A. She encouraged her parents to consider the event.
+
+B. She informed her parents about the event.
+
+C. She convinced her parents to allow her to attend.
+
+D. She reminded her parents about the event.
+
+Correct Answer: C
+
+## QUESTION 7 — BRIEF
+
+Which response would be considered a brief explanation?
+
+A. An explanation covering every background detail and possible outcome.
+
+B. An explanation presenting the main idea in a few clear sentences.
+
+C. An explanation discussing several related topics in depth.
+
+D. An explanation repeating the same information in different words.
+
+Correct Answer: B
+
+## QUESTION 8 — ADEQUATE
+
+A student has 45 minutes to complete an assignment that normally requires 30 minutes.
+
+The available time is:
+
+A. Excessive for the task.
+
+B. Barely insufficient for the task.
+
+C. Adequate for the task.
+
+D. Unnecessarily limited for the task.
+
+Correct Answer: C
+
+## QUESTION 9 — AMBITIOUS
+
+Which person is best described as ambitious?
+
+A. Someone who enjoys imagining different possibilities but rarely pursues them.
+
+B. Someone who sets challenging goals and works consistently to achieve them.
+
+C. Someone who prefers familiar responsibilities and avoids additional challenges.
+
+D. Someone who expects success without making significant efforts.
+
+Correct Answer: B
+
+## QUESTION 10 — ADAPTABLE
+
+A student moves to a new city, joins an unfamiliar school and gradually becomes comfortable with its environment.
+
+Which quality does this demonstrate?
+
+A. The ability to maintain the same habits regardless of circumstances.
+
+B. The ability to avoid unfamiliar situations until they become easier.
+
+C. The ability to adjust to new conditions and changing circumstances.
+
+D. The ability to remain independent without seeking assistance.
+
+Correct Answer: C
+
+## QUESTION 11 — RESILIENT
+
+A student fails an examination, identifies their mistakes, prepares again and continues trying despite disappointment.
+
+Which adjective best describes this student?
+
+A. Optimistic.
+
+B. Resilient.
+
+C. Ambitious.
+
+D. Disciplined.
+
+Correct Answer: B
+
+## QUESTION 12 — ARTICULATE
+
+Which person would most accurately be described as articulate?
+
+A. Someone who has extensive knowledge but struggles to communicate ideas clearly.
+
+B. Someone who speaks frequently but often changes the subject.
+
+C. Someone who expresses thoughts and opinions clearly and effectively.
+
+D. Someone who speaks confidently but rarely explains their reasoning.
+
+Correct Answer: C
+
+## QUESTION 13 — ASSERTIVE
+
+During a discussion, Ahmed disagrees with his classmates and explains his position confidently while respecting their opinions.
+
+Which quality does Ahmed demonstrate?
+
+A. Aggressiveness.
+
+B. Assertiveness.
+
+C. Stubbornness.
+
+D. Indifference.
+
+Correct Answer: B
+
+## QUESTION 14 — EMPATHETIC
+
+A friend is going through a difficult period. You listen carefully, try to understand their feelings and respond with genuine care.
+
+Which adjective best describes your behaviour?
+
+A. Sympathetic.
+
+B. Supportive.
+
+C. Empathetic.
+
+D. Considerate.
+
+Correct Answer: C
+
+## QUESTION 15 — INQUISITIVE
+
+A student frequently asks thoughtful questions, explores unfamiliar subjects and wants to understand how things work.
+
+Which word best describes this student?
+
+A. Inquisitive.
+
+B. Disciplined.
+
+C. Humble.
+
+D. Optimistic.
+
+Correct Answer: A
+
+## QUESTION 16 — OVERWHELMED
+
+A student receives several assignments, has limited time and feels unable to manage all the responsibilities at once.
+
+How would you describe the student's emotional state?
+
+A. Frustrated because one particular task is not going well.
+
+B. Exhausted because physical energy has been completely used.
+
+C. Overwhelmed because too many demands are difficult to manage simultaneously.
+
+D. Reluctant because the student does not want to complete the assignments.
+
+Correct Answer: C
+
+## QUESTION 17 — INTIMIDATING
+
+A student finds public speaking intimidating.
+
+What does this most likely mean?
+
+A. Speaking publicly makes the student feel slightly uncomfortable but interested.
+
+B. Speaking publicly seems difficult or frightening and makes the student nervous.
+
+C. Speaking publicly makes the student feel physically exhausted.
+
+D. Speaking publicly makes the student unwilling to participate because of a lack of interest.
+
+Correct Answer: B
+
+## QUESTION 18 — RELUCTANT
+
+Ahmed has been invited to share his opinion in front of the class, but he hesitates because he feels uncomfortable.
+
+Ahmed is:
+
+A. Uncertain about what he wants to communicate.
+
+B. Reluctant to share his opinion.
+
+C. Unable to understand the discussion.
+
+D. Intimidated by the opinions of others.
+
+Correct Answer: B
+
+## QUESTION 19 — WEARY
+
+After travelling for several hours, Ali feels tired and has little energy left, although he can still continue his journey.
+
+Which word best describes his condition?
+
+A. Frustrated.
+
+B. Exhausted.
+
+C. Weary.
+
+D. Overwhelmed.
+
+Correct Answer: C
+
+## QUESTION 20 — FURIOUS
+
+A person discovers that someone has deliberately damaged something extremely valuable to them. They become extremely angry.
+
+Which word best describes their reaction?
+
+A. Frustrated.
+
+B. Disappointed.
+
+C. Furious.
+
+D. Upset.
+
+Correct Answer: C
+
+## QUESTION 21 — HEARTBROKEN
+
+A person loses someone they deeply love and experiences profound emotional sadness.
+
+Which expression best describes this feeling?
+
+A. Deeply disappointed.
+
+B. Emotionally frustrated.
+
+C. Completely heartbroken.
+
+D. Extremely overwhelmed.
+
+Correct Answer: C
+
+## QUESTION 22 — IDIOM: BITE THE BULLET
+
+A student is afraid of admitting a serious mistake but finally gathers courage, accepts responsibility and apologizes.
+
+Which idiom best describes this decision?
+
+A. Easier said than done.
+
+B. Bite the bullet.
+
+C. In the long run.
+
+D. It slipped my mind.
+
+Correct Answer: B
+
+## QUESTION 23 — IDIOM: IN THE LONG RUN
+
+A student spends an hour every day improving their English. The improvement may seem small initially, but the effort is expected to produce significant benefits over time.
+
+Which expression best completes the idea?
+
+A. In the long run.
+
+B. At the last minute.
+
+C. For the time being.
+
+D. Once in a while.
+
+Correct Answer: A
+
+## QUESTION 24 — IDIOM: IT SLIPPED MY MIND
+
+You promised to bring your notebook to class but accidentally forgot it.
+
+Which response is most appropriate?
+
+A. I was reluctant to bring my notebook.
+
+B. I was overwhelmed by my notebook.
+
+C. It completely slipped my mind.
+
+D. I decided to bite the bullet.
+
+Correct Answer: C
+
+## QUESTION 25 — IDIOM: EASIER SAID THAN DONE
+
+Someone says, "Just stop worrying about every problem and stay positive."
+
+You reply that following this advice is difficult in real life, even though it sounds simple.
+
+Which expression best communicates your response?
+
+A. Better late than never.
+
+B. Easier said than done.
+
+C. In the long run.
+
+D. Where there is a will, there is a way.
+
+Correct Answer: B
+
+## QUESTION 26 — IDIOM: BE UP TO SOMETHING
+
+Three students are whispering, hiding their phones and suddenly stopping their conversation whenever their teacher approaches.
+
+The teacher suspects they:
+
+A. Have something unusual or possibly mischievous planned.
+
+B. Have forgotten something important about their lesson.
+
+C. Are reluctant to participate in the classroom discussion.
+
+D. Are trying to convince someone to change their opinion.
+
+Correct Answer: A
+
+## QUESTION 27 — PROVERB: ACTIONS SPEAK LOUDER THAN WORDS
+
+A person repeatedly promises to help their elderly neighbour but never does anything. Another person rarely makes promises but consistently provides assistance.
+
+Which proverb best describes the second person's behaviour?
+
+A. Practice Makes Perfect.
+
+B. Honesty Is the Best Policy.
+
+C. Actions Speak Louder Than Words.
+
+D. Better Late Than Never.
+
+Correct Answer: C
+
+## QUESTION 28 — PROVERB: WHERE THERE IS A WILL, THERE IS A WAY
+
+A student comes from a financially disadvantaged family but remains determined, finds available educational opportunities and works hard to become a successful doctor.
+
+Which proverb best describes this situation?
+
+A. Don't Judge a Book by Its Cover.
+
+B. Where There Is a Will, There Is a Way.
+
+C. Practice Makes Perfect.
+
+D. Better Late Than Never.
+
+Correct Answer: B
+
+## QUESTION 29 — PHRASAL VERBS
+
+Choose the correct sequence to complete the sentence:
+
+"Every morning, I ______ at 6 o'clock, ______ out of bed, ______ the bedroom light and ______ my school uniform."
+
+A. Get up, wake up, turn off, take off.
+
+B. Wake up, get up, turn on, put on.
+
+C. Wake up, stand up, turn off, pick up.
+
+D. Get up, sit down, turn on, put on.
+
+Correct Answer: B
+
+## QUESTION 30 — ENGLISH PROVERB
+
+A person sees a quiet student and immediately assumes that the student is unintelligent. After working with them, they discover that the student is exceptionally knowledgeable and talented.
+
+Which proverb best describes the lesson?
+
+A. Actions Speak Louder Than Words.
+
+B. Honesty Is the Best Policy.
+
+C. Don't Judge a Book by Its Cover.
+
+D. Better Late Than Never.
+
+Correct Answer: C
+
+---
+
+# 7. ANSWER KEY AND SCORING
+
+Create a secure answer key on the server.
+
+Answer key:
+
+1. B
+2. C
+3. A
+4. D
+5. B
+6. C
+7. B
+8. C
+9. B
+10. C
+11. B
+12. C
+13. B
+14. C
+15. A
+16. C
+17. B
+18. B
+19. C
+20. C
+21. C
+22. B
+23. A
+24. C
+25. B
+26. A
+27. C
+28. B
+29. B
+30. C
+
+Scoring rules:
+
+- One mark per correct answer.
+- Zero marks for incorrect answers.
+- Zero marks for unanswered questions.
+- No negative marking.
+- Maximum score: 30.
+
+Calculate the percentage automatically.
+
+Never expose the answer key to the student frontend before submission.
+
+# 8. STUDENT REGISTRATION AND WAITING ROOM
+
+The public student portal should initially display:
+
+GENZOMATE EXAMINATION PORTAL
+
+English Vocabulary & Expressions Test
+
+Input field:
+Enter your full name.
+
+Button:
+JOIN EXAMINATION
+
+After joining:
+
+- Save the student in Supabase.
+- Generate a unique student session ID.
+- Display their name.
+- Display a successful registration message.
+- Show a waiting room.
+
+Waiting room message:
+
+"You have successfully joined the examination. Please wait for your teacher to start the test."
+
+Display a live participant count.
+
+Students should not access the questions before the teacher starts the examination.
+
+Allow the teacher to see every student who has joined.
+
+# 9. LIVE TEACHER MONITORING
+
+This is a critical requirement.
+
+Create a dedicated live monitoring dashboard.
+
+The teacher must see all student activity in real time.
+
+Display these statistics:
+
+- Total students joined.
+- Currently attempting.
+- Students submitted.
+- Students waiting.
+- Students disconnected.
+
+Create a live table with these columns:
+
+Student Name
+Connection Status
+Exam Status
+Current Question
+Questions Answered
+Progress Percentage
+Time Remaining
+Submission Status
+
+Example:
+
+Muhammad Ali | Online | Answering | Q10 | 9/30 | 30%
+
+Ahmed Khan | Online | Answering | Q17 | 16/30 | 53%
+
+Usman Ahmed | Online | Submitted | Complete | 30/30 | 100%
+
+Update the monitoring dashboard automatically through Supabase Realtime.
+
+Whenever a student:
+
+- Joins, display their name.
+- Opens a question, update their current question.
+- Selects an answer, save their answer.
+- Moves to another question, update their progress.
+- Disconnects, update their connection status.
+- Submits, immediately show submission status.
+
+The teacher must be able to identify exactly which question each student is attempting.
+
+Track current question and saved answers in the database.
+
+Use debounced updates to avoid excessive database requests.
+
+Do not confuse question navigation with answer completion. Track both separately.
+
+# 10. TEACHER EXAMINATION CONTROL
+
+Create a dedicated examination control panel.
+
+Include:
+
+START EXAMINATION
+
+PAUSE EXAMINATION
+
+RESUME EXAMINATION
+
+END EXAMINATION
+
+VIEW RESULTS
+
+REVEAL LEADERBOARD
+
+When the teacher clicks START:
+
+- Change examination status to active.
+- Notify all registered students through Supabase Realtime.
+- Display the examination on student screens.
+- Start the server-controlled examination timer.
+
+When PAUSE is clicked:
+
+- Freeze the remaining examination time.
+- Prevent students from changing answers.
+- Show a paused message.
+
+When RESUME is clicked:
+
+- Continue from the saved remaining time.
+
+When END is clicked:
+
+- Immediately stop accepting new answers.
+- Finalize all attempts.
+- Automatically submit saved answers for active students.
+- Calculate all results.
+- Save results permanently.
+- Generate the leaderboard.
+
+All these operations must be controlled by the teacher.
+
+# 11. EXAMINATION INTERFACE
+
+Create a professional, distraction-free examination interface.
+
+Display:
+
+- Student name.
+- Examination title.
+- Countdown timer.
+- Current question.
+- Total questions.
+- Four answer options.
+- Previous button.
+- Next button.
+- Submit examination button.
+- Question navigation panel.
+
+Question navigation:
+
+- Green: Answered.
+- Grey: Unanswered.
+- Highlighted: Current question.
+
+Allow students to navigate between questions.
+
+Save every selected answer in Supabase.
+
+If a student refreshes their browser or temporarily disconnects:
+
+- Restore their existing session.
+- Restore saved answers.
+- Restore examination status.
+- Restore remaining time.
+- Allow them to continue if the examination is still active.
+
+Prevent duplicate submissions.
+
+The timer must be enforced using server-side timestamps, not the student's browser clock.
+
+# 12. RESULT MANAGEMENT
+
+When an examination ends:
+
+- Calculate every student's marks.
+- Store their results.
+- Calculate percentage.
+- Record submission time.
+- Record correct, incorrect and unanswered questions.
+
+Create an individual result page displaying:
+
+- Student name.
+- Marks obtained.
+- Total marks.
+- Percentage.
+- Correct answers count.
+- Incorrect answers count.
+- Unanswered questions count.
+
+The teacher should be able to inspect every student's detailed results.
+
+Keep answer explanations and correct answers hidden until the teacher authorizes their release.
+
+# 13. TEACHER-CONTROLLED LEADERBOARD
+
+This feature is extremely important.
+
+After the examination ends:
+
+Initially, only the teacher can see the complete leaderboard.
+
+Students must not see the rankings or other students' scores yet.
+
+On the teacher dashboard, display a prominent button:
+
+REVEAL LEADERBOARD TO STUDENTS
+
+When clicked:
+
+- Update the leaderboard visibility setting in Supabase.
+- Broadcast the change using Supabase Realtime.
+- Automatically display the leaderboard on every connected student's screen.
+- Do not require students to refresh the website.
+
+The public leaderboard should show:
+
+- Position.
+- Student name.
+- Marks obtained.
+- Total marks.
+- Percentage.
+
+Highlight:
+
+1st Position
+2nd Position
+3rd Position
+
+Display all students, not only the top three.
+
+Rank students by:
+
+1. Highest marks.
+2. Earliest submission time for tied scores.
+
+The teacher must also have a button to hide the leaderboard again if needed.
+
+Never reveal private student answers through the public leaderboard.
+
+# 14. DATABASE ARCHITECTURE
+
+Use Supabase PostgreSQL.
+
+Create proper database tables, including:
+
+profiles
+exams
+questions
+student_sessions
+student_progress
+submission_answers
+submissions
+exam_settings
+exam_events
+
+The database must support:
+
+- Permanent student records.
+- Examination questions.
+- Correct answers.
+- Student sessions.
+- Current question tracking.
+- Selected answers.
+- Answered question counts.
+- Connection status.
+- Exam status.
+- Timer information.
+- Pause and resume state.
+- Submission records.
+- Final marks.
+- Leaderboard visibility.
+- Historical examination records.
+
+Use appropriate indexes, foreign keys and constraints.
+
+Implement proper Supabase Row Level Security.
+
+Students must only be able to access and modify their own permitted records.
+
+Students must not be able to modify their marks, examination status or answer keys.
+
+Only authorized teachers can control examinations.
+
+Never expose the Supabase service role key in browser code.
+
+# 15. EXAMINATION HISTORY
+
+Create a section in the teacher dashboard called Examination History.
+
+Store every completed examination.
+
+Display:
+
+- Examination title.
+- Date.
+- Number of participants.
+- Average score.
+- Highest score.
+- Lowest score.
+- Leaderboard.
+- Individual student results.
+
+Never automatically delete previous examination records.
+
+Allow the teacher to open historical results.
+
+# 16. FUTURE QUESTION MANAGEMENT
+
+Although the first examination must contain the exact 30 MCQs provided above, build an admin interface that allows the teacher to:
+
+- Create new examinations.
+- Add MCQs.
+- Edit questions.
+- Add four options.
+- Select correct answers.
+- Assign marks.
+- Delete questions before publication.
+- Import questions in the future.
+
+Do not hardcode the examination system so that it only supports these 30 questions.
+
+# 17. PERFORMANCE AND SECURITY
+
+Implement:
+
+- Server-side score calculation.
+- Secure answer key storage.
+- Supabase RLS.
+- Teacher authentication.
+- Student session validation.
+- Duplicate submission prevention.
+- Server-side timer enforcement.
+- Input validation.
+- Error handling.
+- Loading states.
+- Reconnection handling.
+- Database transaction safety where appropriate.
+
+For student access, use a secure anonymous session or equivalent session-token approach.
+
+A student's name alone must never be sufficient authorization to modify another student's attempt.
+
+For simultaneous students, ensure real-time updates are efficient and reliable.
+
+# 18. DEPLOYMENT
+
+Prepare the application for Vercel deployment.
+
+Create:
+
+- README.md
+- .env.example
+- Supabase SQL schema.
+- Database migrations.
+- RLS policies.
+- Setup instructions.
+- Deployment instructions.
+
+Environment variables:
+
+NEXT_PUBLIC_SUPABASE_URL=
+
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+
+SUPABASE_SERVICE_ROLE_KEY=
+
+Keep private keys server-side.
+
+# 19. TESTING REQUIREMENTS
+
+Before declaring the project complete, test the actual application.
+
+Simulate at least three students using separate browser sessions.
+
+Verify:
+
+1. Students can join with their names.
+2. Teacher sees all joined students.
+3. Students wait until the teacher starts.
+4. Teacher starts the examination.
+5. All students receive the examination.
+6. Teacher sees current question numbers.
+7. Answer selections are saved.
+8. Progress updates in real time.
+9. Timer works correctly.
+10. Teacher can pause and resume.
+11. Teacher can end the examination.
+12. All active attempts are finalized.
+13. Scores are calculated correctly.
+14. Leaderboard remains private initially.
+15. Teacher can reveal the leaderboard.
+16. All students see it without refreshing.
+17. Refreshing does not erase saved answers.
+18. Historical records remain available.
+19. Students cannot access correct answers before submission.
+20. Students cannot manipulate their marks.
+
+Run npm build and fix all build errors.
+
+Do not claim features are working unless they have actually been tested.
+
+# 20. DEVELOPMENT INSTRUCTIONS
+
+Work independently as much as possible.
+
+First inspect the project structure.
+
+Then build the application in logical stages:
+
+Stage 1: Project setup and design.
+
+Stage 2: Supabase configuration and database.
+
+Stage 3: Teacher authentication and dashboard.
+
+Stage 4: Student registration and waiting room.
+
+Stage 5: Examination interface and question integration.
+
+Stage 6: Real-time teacher monitoring.
+
+Stage 7: Examination controls and timer.
+
+Stage 8: Scoring and results.
+
+Stage 9: Teacher-controlled leaderboard.
+
+Stage 10: Testing and Vercel deployment preparation.
+
+If Supabase credentials are missing, create the necessary configuration placeholders and explain exactly what I need to provide.
+
+Do not substitute mock data for actual database operations.
+
+Do not leave buttons non-functional.
+
+Do not remove any of the 30 provided MCQs.
+
+Prioritize a fully working examination system over unnecessary additional features.
+
+FINAL OBJECTIVE:
+
+Deliver a professional, secure and fully functional live examination platform where I can share one link with all students, watch their activity question by question, control the examination from my dashboard, calculate results automatically and reveal the leaderboard to everyone with one click.
