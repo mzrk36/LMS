@@ -487,7 +487,29 @@ app.post('/api/admin/login', (req, res) => {
 });
 
 // Live teacher monitoring list
-app.get('/api/admin/monitor', (req, res) => {
+app.get('/api/admin/monitor', async (req, res) => {
+  // Sync with Firestore if available to get sessions across all instances
+  if (firestoreDb) {
+    try {
+      const snap = await getDocs(collection(firestoreDb, 'exams', state.exam.id, 'sessions'));
+      snap.forEach(docSnap => {
+        const s = docSnap.data() as StudentSession;
+        if (s && s.sessionId && !s.expired) {
+          // If exam has resetAt, ignore older sessions
+          if (state.exam.resetAt && s.joinedAt && s.joinedAt < state.exam.resetAt) {
+            return;
+          }
+          const existing = state.sessions.get(s.sessionId);
+          if (!existing || (s.lastActive && s.lastActive >= (existing.lastActive || 0))) {
+            state.sessions.set(s.sessionId, s);
+          }
+        }
+      });
+    } catch (e) {
+      // safe fallback
+    }
+  }
+
   const sessions = Array.from(state.sessions.values());
   const now = Date.now();
 
@@ -578,7 +600,7 @@ app.post('/api/admin/solutions/toggle', (req, res) => {
 });
 
 // Teacher resets exam for a new session
-app.post('/api/admin/exam/reset', (req, res) => {
+app.post('/api/admin/exam/reset', async (req, res) => {
   if (state.timerInterval) {
     clearInterval(state.timerInterval);
     state.timerInterval = null;
@@ -590,7 +612,21 @@ app.post('/api/admin/exam/reset', (req, res) => {
   state.exam.endedAt = undefined;
   state.exam.leaderboardRevealed = false;
   state.exam.solutionsRevealed = false;
+  state.exam.resetAt = Date.now();
   syncExamToFirestore(state.exam);
+
+  // Clear Firestore sessions collection for this exam
+  if (firestoreDb) {
+    try {
+      const snap = await getDocs(collection(firestoreDb, 'exams', state.exam.id, 'sessions'));
+      const batchPromises = snap.docs.map(d =>
+        setDoc(doc(firestoreDb, 'exams', state.exam.id, 'sessions', d.id), { expired: true, studentName: '' }, { merge: true })
+      );
+      await Promise.allSettled(batchPromises);
+    } catch (e) {
+      console.warn('[Firestore] Reset sessions notice:', e);
+    }
+  }
 
   broadcastEvent('EXAM_RESET', { exam: state.exam });
   res.json({ success: true, exam: state.exam });

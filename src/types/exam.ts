@@ -31,6 +31,7 @@ export interface Exam {
   solutionsRevealed: boolean;
   createdAt: number;
   endedAt?: number;
+  resetAt?: number;
 }
 
 export interface StudentSession {
@@ -51,6 +52,7 @@ export interface StudentSession {
   correctCount?: number;
   incorrectCount?: number;
   unansweredCount?: number;
+  expired?: boolean;
 }
 
 export interface LeaderboardEntry {

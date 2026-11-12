@@ -368,15 +368,72 @@ class ExaminationApiService {
     sessions: StudentSession[];
     questions: Question[];
   }> {
+    let serverSessions: StudentSession[] = [];
+    let serverStats: any = null;
+    let currentExam = this.cachedExam;
+
+    // 1. Try server endpoint
     try {
       const res = await fetch('/api/admin/monitor');
-      if (res.ok) return await res.json();
-    } catch {}
+      if (res.ok) {
+        const data = await res.json();
+        serverSessions = data.sessions || [];
+        serverStats = data.stats;
+        if (data.exam) currentExam = data.exam;
+      }
+    } catch (e) {
+      // serverless fallback
+    }
+
+    // 2. Query Firestore directly for instant candidate presence
+    const sessionMap = new Map<string, StudentSession>();
+    serverSessions.forEach(s => sessionMap.set(s.sessionId, s));
+
+    if (db) {
+      try {
+        const snap = await getDocs(collection(db, 'exams', 'genzomate-eng-001', 'sessions'));
+        snap.forEach(docSnap => {
+          const s = docSnap.data() as StudentSession;
+          if (s && s.sessionId && !s.expired) {
+            // Check if older than resetAt
+            if (currentExam.resetAt && s.joinedAt && s.joinedAt < currentExam.resetAt) {
+              return;
+            }
+            const existing = sessionMap.get(s.sessionId);
+            if (!existing || (s.lastActive && s.lastActive >= (existing.lastActive || 0))) {
+              sessionMap.set(s.sessionId, s);
+            }
+          }
+        });
+      } catch (err) {
+        console.warn('[Firestore] Monitor sync notice:', err);
+      }
+    }
+
+    const mergedSessions = Array.from(sessionMap.values());
+    const now = Date.now();
+
+    // Mark inactive if > 60s
+    mergedSessions.forEach(s => {
+      if (s.submissionStatus !== 'submitted' && now - (s.lastActive || 0) > 60000) {
+        s.connectionStatus = 'offline';
+      }
+    });
+
+    const totalJoined = mergedSessions.length;
+    const currentlyAttempting = mergedSessions.filter(s => s.submissionStatus === 'answering' && s.connectionStatus === 'online').length;
+    const submitted = mergedSessions.filter(s => s.submissionStatus === 'submitted').length;
+    const waiting = mergedSessions.filter(s => s.submissionStatus === 'waiting').length;
+    const disconnected = mergedSessions.filter(s => s.connectionStatus === 'offline').length;
+
+    const stats = serverStats && serverSessions.length >= mergedSessions.length
+      ? serverStats
+      : { totalJoined, currentlyAttempting, submitted, waiting, disconnected };
 
     return {
-      stats: { totalJoined: 1, currentlyAttempting: 0, submitted: 0, waiting: 1, disconnected: 0 },
-      exam: this.cachedExam,
-      sessions: [],
+      stats,
+      exam: currentExam,
+      sessions: mergedSessions,
       questions: DEFAULT_QUESTIONS
     };
   }
@@ -487,17 +544,39 @@ class ExaminationApiService {
   }
 
   async resetExam(): Promise<{ success: boolean; exam: Exam }> {
+    const now = Date.now();
     try {
       const res = await fetch('/api/admin/exam/reset', { method: 'POST' });
-      if (res.ok) return await res.json();
+      if (res.ok) {
+        const data = await res.json();
+        this.cachedExam = data.exam;
+      }
     } catch {}
 
     this.cachedExam.status = 'waiting';
     this.cachedExam.remainingSeconds = this.cachedExam.durationMinutes * 60;
     this.cachedExam.leaderboardRevealed = false;
     this.cachedExam.solutionsRevealed = false;
+    this.cachedExam.resetAt = now;
+
+    // Clear client-side student session from storage
+    localStorage.removeItem('genzomate_student_session_id');
+
+    // Mark Firestore sessions expired
+    if (db) {
+      try {
+        const snap = await getDocs(collection(db, 'exams', 'genzomate-eng-001', 'sessions'));
+        const batchPromises = snap.docs.map(d =>
+          setDoc(doc(db, 'exams', 'genzomate-eng-001', 'sessions', d.id), { expired: true, studentName: '' }, { merge: true })
+        );
+        await Promise.allSettled(batchPromises);
+      } catch (err) {
+        console.warn('[Firestore] Reset cleanup notice:', err);
+      }
+    }
+
     this.listeners.forEach((l) =>
-      l({ type: 'EXAM_RESET', data: { exam: this.cachedExam }, timestamp: Date.now() })
+      l({ type: 'EXAM_RESET', data: { exam: this.cachedExam }, timestamp: now })
     );
     return { success: true, exam: this.cachedExam };
   }

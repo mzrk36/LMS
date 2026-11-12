@@ -89,9 +89,10 @@ export const AdminMonitor: React.FC<AdminMonitorProps> = ({
       <div className="bg-white border border-slate-200/90 rounded-2xl shadow-sm p-5">
         <div className="flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-slate-100">
           <div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#28AF60]">
-                Live Examination Controller
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#28AF60] flex items-center gap-1.5 bg-[#EAF7F0] px-2 py-0.5 rounded-full">
+                <span className="w-2 h-2 rounded-full bg-[#28AF60] animate-ping" />
+                Live Sync Active (2.5s)
               </span>
               <span className="text-slate-300">•</span>
               <span className="text-xs font-mono font-medium text-slate-500">
@@ -192,17 +193,19 @@ export const AdminMonitor: React.FC<AdminMonitorProps> = ({
               <span>Simulate 3 Students</span>
             </button>
 
-            {/* Reset Exam */}
+            {/* Prominent Reset Exam Button */}
             <button
               onClick={() => {
-                if (confirm('Reset examination state and clear current student sessions?')) {
+                if (confirm('RESET FOR NEW EXAM:\n\nThis will reset the test back to the beginning, clear all previous candidate attempts, and require all students to rewrite their names to join fresh. Proceed?')) {
                   handleAction('reset', onResetExam);
                 }
               }}
-              className="flex items-center justify-center p-2.5 rounded-xl border border-slate-300 text-slate-600 hover:bg-slate-100 transition-all cursor-pointer"
+              disabled={actionLoading === 'reset'}
+              className="flex items-center justify-center gap-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-300 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer"
               title="Reset Exam for New Session"
             >
-              <RotateCcw className="w-4 h-4" />
+              <RotateCcw className={`w-3.5 h-3.5 ${actionLoading === 'reset' ? 'animate-spin' : ''}`} />
+              <span>{actionLoading === 'reset' ? 'Resetting...' : 'Reset Exam (New Test)'}</span>
             </button>
 
           </div>

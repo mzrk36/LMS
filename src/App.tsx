@@ -80,16 +80,27 @@ export function App() {
       if (savedSessionId) {
         try {
           const sessData = await api.getSession(savedSessionId);
-          setStudentSession(sessData.session);
-          if (sessData.session.submissionStatus === 'submitted') {
-            if (currentRoute === '/exam') {
-              navigate('/results');
+          const isExpiredByReset = data.exam.resetAt && sessData.session.joinedAt < data.exam.resetAt;
+          
+          if (isExpiredByReset || (data.exam.status === 'waiting' && sessData.session.submissionStatus === 'submitted')) {
+            // Discard previous or concluded session so student enters name fresh
+            localStorage.removeItem('genzomate_student_session_id');
+            setStudentSession(null);
+          } else {
+            setStudentSession(sessData.session);
+            if (sessData.session.submissionStatus === 'submitted') {
+              if (currentRoute === '/exam') {
+                navigate('/results');
+              }
             }
           }
         } catch {
           // Stale session
           localStorage.removeItem('genzomate_student_session_id');
+          setStudentSession(null);
         }
+      } else {
+        setStudentSession(null);
       }
     } catch (err) {
       console.error('[App] Failed to load exam data', err);
@@ -119,6 +130,18 @@ export function App() {
       console.error('[App] Failed to load teacher data', err);
     }
   }, [isTeacherAuthenticated]);
+
+  // Active 2.5s fast auto-polling for teacher view (guarantees candidate sync even across serverless/Vercel)
+  useEffect(() => {
+    if (!isTeacherAuthenticated || !currentRoute.startsWith('/admin')) return;
+
+    loadTeacherData();
+    const interval = setInterval(() => {
+      loadTeacherData();
+    }, 2500);
+
+    return () => clearInterval(interval);
+  }, [isTeacherAuthenticated, currentRoute, loadTeacherData]);
 
   // Initial load
   useEffect(() => {

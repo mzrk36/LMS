@@ -6,419 +6,419 @@ export const DEFAULT_QUESTIONS: Question[] = [
     category: 'Vocabulary',
     question: 'What does the word "Conceal" mean?',
     options: {
-      A: 'To avoid discussing something that causes embarrassment.',
-      B: 'To hide something deliberately so that others cannot discover or see it.',
-      C: 'To protect something from being damaged or disturbed.',
-      D: 'To keep something private by refusing to explain it.'
+      A: 'To show something to everyone.',
+      B: 'To hide something so others cannot see it.',
+      C: 'To clean and repair something.',
+      D: 'To talk about something openly.'
     },
     correctAnswer: 'B',
-    explanation: 'Conceal means to keep from sight or to hide something deliberately.',
+    explanation: 'Conceal means to hide something deliberately from sight.',
     marks: 1
   },
   {
     id: 2,
     category: 'Vocabulary',
-    question: "A comprehensive report about a company's performance would most likely include:",
+    question: 'What does the word "Comprehensive" mean?',
     options: {
-      A: 'The most important findings without supporting details.',
-      B: 'A detailed discussion of one particular department.',
-      C: 'A complete examination of all important aspects of the company\'s performance.',
-      D: 'A summary of the company\'s achievements and future plans only.'
+      A: 'Very short and quick.',
+      B: 'Difficult to read or hear.',
+      C: 'Complete and covering all important details.',
+      D: 'Boring and uninteresting.'
     },
     correctAnswer: 'C',
-    explanation: 'Comprehensive means complete and including everything that is necessary.',
+    explanation: 'Comprehensive means thorough, complete, and including everything necessary.',
     marks: 1
   },
   {
     id: 3,
-    category: 'Attribute',
-    question: 'Which sentence uses the word "Attribute" in the sense of a quality or characteristic?',
+    category: 'Vocabulary',
+    question: 'Which sentence uses the word "Attribute" as a good quality or trait?',
     options: {
-      A: 'Patience is an important attribute of an effective teacher.',
-      B: 'Patience is an important achievement of an effective teacher.',
-      C: 'Patience is an important responsibility of an effective teacher.',
-      D: 'Patience is an important opportunity for an effective teacher.'
+      A: 'Patience is an important attribute of a good teacher.',
+      B: 'He attribute his homework yesterday morning.',
+      C: 'She bought an attribute from the grocery market.',
+      D: 'The football match was an attribute today.'
     },
     correctAnswer: 'A',
-    explanation: 'As a noun, attribute denotes a quality or feature regarded as a characteristic or inherent part of someone.',
+    explanation: 'As a noun, attribute means a good feature, quality, or characteristic of a person.',
     marks: 1
   },
   {
     id: 4,
-    category: 'Artificial',
-    question: 'Which situation best demonstrates something artificial?',
+    category: 'Vocabulary',
+    question: 'Which of the following is "Artificial" (made by humans, not natural)?',
     options: {
-      A: 'A flower growing naturally in a garden.',
-      B: 'A river flowing through a mountain valley.',
-      C: 'A wooden branch falling from a tree.',
-      D: 'A decorative flower manufactured from plastic.'
+      A: 'Fresh rain falling from the sky.',
+      B: 'A green apple growing on a tree.',
+      C: 'A plastic flower made in a factory.',
+      D: 'Fresh river water flowing from a mountain.'
     },
-    correctAnswer: 'D',
-    explanation: 'Artificial means made or produced by human beings rather than occurring naturally.',
+    correctAnswer: 'C',
+    explanation: 'Artificial means made or produced by humans rather than occurring naturally.',
     marks: 1
   },
   {
     id: 5,
-    category: 'Crucial',
-    question: 'A teacher discovers that a student has misunderstood an important concept before the final examination. Correcting that misunderstanding is crucial because:',
+    category: 'Vocabulary',
+    question: 'Drinking clean water every day is "Crucial" for good health. Here, crucial means:',
     options: {
-      A: 'It might make the lesson slightly more interesting.',
-      B: 'It is extremely important for the student\'s understanding and performance.',
-      C: 'It could make the student finish the lesson earlier.',
-      D: 'It is one of several optional activities in the classroom.'
+      A: 'Optional and not needed.',
+      B: 'Extremely important and necessary.',
+      C: 'Dangerous and harmful.',
+      D: 'Fun and entertaining.'
     },
     correctAnswer: 'B',
-    explanation: 'Crucial means of great importance; critical or decisive.',
+    explanation: 'Crucial means extremely important and necessary for success or health.',
     marks: 1
   },
   {
     id: 6,
-    category: 'Convince',
-    question: 'Sara wants her parents to allow her to attend an educational event. She presents strong reasons and successfully changes their minds. What did Sara do?',
+    category: 'Vocabulary',
+    question: 'Ali gave good reasons and changed his friend’s mind. Ali managed to ______ his friend.',
     options: {
-      A: 'She encouraged her parents to consider the event.',
-      B: 'She informed her parents about the event.',
-      C: 'She convinced her parents to allow her to attend.',
-      D: 'She reminded her parents about the event.'
+      A: 'Ignore',
+      B: 'Frighten',
+      C: 'Convince',
+      D: 'Forget'
     },
     correctAnswer: 'C',
-    explanation: 'Convince means to persuade someone of something or cause someone to agree through argument or evidence.',
+    explanation: 'Convince means to persuade someone to believe or agree with something.',
     marks: 1
   },
   {
     id: 7,
-    category: 'Brief',
-    question: 'Which response would be considered a brief explanation?',
+    category: 'Vocabulary',
+    question: 'The teacher gave a "Brief" explanation of the lesson. What does brief mean?',
     options: {
-      A: 'An explanation covering every background detail and possible outcome.',
-      B: 'An explanation presenting the main idea in a few clear sentences.',
-      C: 'An explanation discussing several related topics in depth.',
-      D: 'An explanation repeating the same information in different words.'
+      A: 'Very long and detailed.',
+      B: 'Short, clear, and quick.',
+      C: 'Loud and angry.',
+      D: 'Confusing and messy.'
     },
     correctAnswer: 'B',
-    explanation: 'Brief means concise, short, and to the point.',
+    explanation: 'Brief means short and to the point.',
     marks: 1
   },
   {
     id: 8,
-    category: 'Adequate',
-    question: 'A student has 45 minutes to complete an assignment that normally requires 30 minutes. The available time is:',
+    category: 'Vocabulary',
+    question: 'There is "Adequate" food for all guests at the party. What does adequate mean?',
     options: {
-      A: 'Excessive for the task.',
-      B: 'Barely insufficient for the task.',
-      C: 'Adequate for the task.',
-      D: 'Unnecessarily limited for the task.'
+      A: 'Not enough to eat.',
+      B: 'Completely spoiled and bad.',
+      C: 'Enough and satisfactory for everyone.',
+      D: 'Too expensive to buy.'
     },
     correctAnswer: 'C',
-    explanation: 'Adequate means satisfactory or acceptable in quality or quantity.',
+    explanation: 'Adequate means enough in quantity or quality for what is needed.',
     marks: 1
   },
   {
     id: 9,
-    category: 'Ambitious',
-    question: 'Which person is best described as ambitious?',
+    category: 'Personality',
+    question: 'A person who sets big goals and works hard to achieve success is described as:',
     options: {
-      A: 'Someone who enjoys imagining different possibilities but rarely pursues them.',
-      B: 'Someone who sets challenging goals and works consistently to achieve them.',
-      C: 'Someone who prefers familiar responsibilities and avoids additional challenges.',
-      D: 'Someone who expects success without making significant efforts.'
+      A: 'Lazy',
+      B: 'Ambitious',
+      C: 'Careless',
+      D: 'Shy'
     },
     correctAnswer: 'B',
-    explanation: 'Ambitious means having or showing a strong desire and determination to succeed.',
+    explanation: 'Ambitious means having a strong desire and determination to succeed.',
     marks: 1
   },
   {
     id: 10,
-    category: 'Adaptable',
-    question: 'A student moves to a new city, joins an unfamiliar school and gradually becomes comfortable with its environment. Which quality does this demonstrate?',
+    category: 'Personality',
+    question: 'When Sarah moved to a new school, she quickly made friends and got used to the new rules. Sarah is:',
     options: {
-      A: 'The ability to maintain the same habits regardless of circumstances.',
-      B: 'The ability to avoid unfamiliar situations until they become easier.',
-      C: 'The ability to adjust to new conditions and changing circumstances.',
-      D: 'The ability to remain independent without seeking assistance.'
+      A: 'Stubborn',
+      B: 'Selfish',
+      C: 'Adaptable',
+      D: 'Afraid'
     },
     correctAnswer: 'C',
-    explanation: 'Adaptable means able to adjust readily to new or altered conditions.',
+    explanation: 'Adaptable means able to adjust easily to new situations and changes.',
     marks: 1
   },
   {
     id: 11,
-    category: 'Resilient',
-    question: 'A student fails an examination, identifies their mistakes, prepares again and continues trying despite disappointment. Which adjective best describes this student?',
+    category: 'Personality',
+    question: 'Hamza failed his driving test once, but he did not give up. He practiced and passed on his next try. Hamza is:',
     options: {
-      A: 'Optimistic.',
-      B: 'Resilient.',
-      C: 'Ambitious.',
-      D: 'Disciplined.'
+      A: 'Greedy',
+      B: 'Resilient',
+      C: 'Weak',
+      D: 'Disobedient'
     },
     correctAnswer: 'B',
-    explanation: 'Resilient means able to withstand or recover quickly from difficult conditions or setback.',
+    explanation: 'Resilient means able to recover quickly from difficulties or setbacks.',
     marks: 1
   },
   {
     id: 12,
-    category: 'Articulate',
-    question: 'Which person would most accurately be described as articulate?',
+    category: 'Communication',
+    question: 'Someone who speaks clearly, uses good words, and explains ideas easily is:',
     options: {
-      A: 'Someone who has extensive knowledge but struggles to communicate ideas clearly.',
-      B: 'Someone who speaks frequently but often changes the subject.',
-      C: 'Someone who expresses thoughts and opinions clearly and effectively.',
-      D: 'Someone who speaks confidently but rarely explains their reasoning.'
+      A: 'Silent',
+      B: 'Confused',
+      C: 'Articulate',
+      D: 'Rude'
     },
     correctAnswer: 'C',
-    explanation: 'Articulate means having or showing the ability to speak fluently and coherently.',
+    explanation: 'Articulate means able to express thoughts and ideas clearly and effectively.',
     marks: 1
   },
   {
     id: 13,
-    category: 'Assertive',
-    question: 'During a discussion, Ahmed disagrees with his classmates and explains his position confidently while respecting their opinions. Which quality does Ahmed demonstrate?',
+    category: 'Communication',
+    question: 'During class, Ahmed speaks up for his opinion politely and confidently without shouting. Ahmed is:',
     options: {
-      A: 'Aggressiveness.',
-      B: 'Assertiveness.',
-      C: 'Stubbornness.',
-      D: 'Indifference.'
+      A: 'Aggressive',
+      B: 'Assertive',
+      C: 'Fearful',
+      D: 'Careless'
     },
     correctAnswer: 'B',
-    explanation: 'Assertive means having or showing a confident and forceful personality without being aggressive.',
+    explanation: 'Assertive means confident and firm in expressing yourself while still being polite and respectful.',
     marks: 1
   },
   {
     id: 14,
-    category: 'Empathetic',
-    question: 'A friend is going through a difficult period. You listen carefully, try to understand their feelings and respond with genuine care. Which adjective best describes your behaviour?',
+    category: 'Personality',
+    question: 'When your friend is feeling sad, you listen carefully and truly understand how they feel. You are being:',
     options: {
-      A: 'Sympathetic.',
-      B: 'Supportive.',
-      C: 'Empathetic.',
-      D: 'Considerate.'
+      A: 'Cruel',
+      B: 'Impatient',
+      C: 'Empathetic',
+      D: 'Distracted'
     },
     correctAnswer: 'C',
-    explanation: 'Empathetic means showing an ability to understand and share the feelings of another.',
+    explanation: 'Empathetic means understanding and sharing the feelings of another person.',
     marks: 1
   },
   {
     id: 15,
-    category: 'Inquisitive',
-    question: 'A student frequently asks thoughtful questions, explores unfamiliar subjects and wants to understand how things work. Which word best describes this student?',
+    category: 'Personality',
+    question: 'A student who is always curious, asks great questions, and loves discovering new facts is:',
     options: {
-      A: 'Inquisitive.',
-      B: 'Disciplined.',
-      C: 'Humble.',
-      D: 'Optimistic.'
+      A: 'Inquisitive',
+      B: 'Bored',
+      C: 'Sleepy',
+      D: 'Selfish'
     },
     correctAnswer: 'A',
-    explanation: 'Inquisitive means curious or inquiring; eager to investigate and learn.',
+    explanation: 'Inquisitive means curious and eager to learn or investigate new things.',
     marks: 1
   },
   {
     id: 16,
-    category: 'Overwhelmed',
-    question: "A student receives several assignments, has limited time and feels unable to manage all the responsibilities at once. How would you describe the student's emotional state?",
+    category: 'Emotions',
+    question: 'You have four exams tomorrow, lots of chores, and too little time to finish everything. You feel:',
     options: {
-      A: 'Frustrated because one particular task is not going well.',
-      B: 'Exhausted because physical energy has been completely used.',
-      C: 'Overwhelmed because too many demands are difficult to manage simultaneously.',
-      D: 'Reluctant because the student does not want to complete the assignments.'
+      A: 'Calm and relaxed.',
+      B: 'Cheerful and energetic.',
+      C: 'Overwhelmed with too much to handle.',
+      D: 'Excited with nothing to do.'
     },
     correctAnswer: 'C',
-    explanation: 'Overwhelmed means buried beneath a huge mass or having too much of something to deal with.',
+    explanation: 'Overwhelmed means feeling stressed because you have too much work or pressure to deal with at once.',
     marks: 1
   },
   {
     id: 17,
-    category: 'Intimidating',
-    question: 'A student finds public speaking intimidating. What does this most likely mean?',
+    category: 'Emotions',
+    question: 'Giving a speech in front of 500 people feels "Intimidating". This means it feels:',
     options: {
-      A: 'Speaking publicly makes the student feel slightly uncomfortable but interested.',
-      B: 'Speaking publicly seems difficult or frightening and makes the student nervous.',
-      C: 'Speaking publicly makes the student feel physically exhausted.',
-      D: 'Speaking publicly makes the student unwilling to participate because of a lack of interest.'
+      A: 'Simple and comforting.',
+      B: 'Scary, nervous, or difficult.',
+      C: 'Boring and dull.',
+      D: 'Funny and silly.'
     },
     correctAnswer: 'B',
-    explanation: 'Intimidating means having a frightening, overawing, or daunting effect.',
+    explanation: 'Intimidating means frightening, daunting, or making someone feel nervous and lacking confidence.',
     marks: 1
   },
   {
     id: 18,
-    category: 'Reluctant',
-    question: 'Ahmed has been invited to share his opinion in front of the class, but he hesitates because he feels uncomfortable. Ahmed is:',
+    category: 'Emotions',
+    question: 'Bilal was asked to sing on stage, but he hesitated because he was shy. Bilal was ______ to sing.',
     options: {
-      A: 'Uncertain about what he wants to communicate.',
-      B: 'Reluctant to share his opinion.',
-      C: 'Unable to understand the discussion.',
-      D: 'Intimidated by the opinions of others.'
+      A: 'Eager',
+      B: 'Reluctant',
+      C: 'Proud',
+      D: 'Hurried'
     },
     correctAnswer: 'B',
-    explanation: 'Reluctant means unwilling and hesitant; disinclined.',
+    explanation: 'Reluctant means unwilling, hesitant, or slow to do something.',
     marks: 1
   },
   {
     id: 19,
-    category: 'Weary',
-    question: 'After travelling for several hours, Ali feels tired and has little energy left, although he can still continue his journey. Which word best describes his condition?',
+    category: 'Emotions',
+    question: 'After walking 12 kilometers in the hot sun, the traveler felt very tired and lacked energy. The traveler was:',
     options: {
-      A: 'Frustrated.',
-      B: 'Exhausted.',
-      C: 'Weary.',
-      D: 'Overwhelmed.'
+      A: 'Cheerfully active.',
+      B: 'Completely angry.',
+      C: 'Weary and tired.',
+      D: 'Eager to run.'
     },
     correctAnswer: 'C',
-    explanation: 'Weary means feeling or showing extreme tiredness, especially as a result of excessive exertion.',
+    explanation: 'Weary means feeling tired, worn out, or drained of energy after hard work or effort.',
     marks: 1
   },
   {
     id: 20,
-    category: 'Furious',
-    question: 'A person discovers that someone has deliberately damaged something extremely valuable to them. They become extremely angry. Which word best describes their reaction?',
+    category: 'Emotions',
+    question: 'Someone stole Tariq\'s bicycle from his front yard. When Tariq realized it, he became "Furious". Furious means:',
     options: {
-      A: 'Frustrated.',
-      B: 'Disappointed.',
-      C: 'Furious.',
-      D: 'Upset.'
+      A: 'Pleasantly surprised.',
+      B: 'Mildly interested.',
+      C: 'Extremely angry.',
+      D: 'A little sleepy.'
     },
     correctAnswer: 'C',
-    explanation: 'Furious means extremely angry; full of fury.',
+    explanation: 'Furious means full of fury or extremely angry.',
     marks: 1
   },
   {
     id: 21,
-    category: 'Heartbroken',
-    question: 'A person loses someone they deeply love and experiences profound emotional sadness. Which expression best describes this feeling?',
+    category: 'Emotions',
+    question: 'When their beloved old dog passed away, the family was "Heartbroken". This means they were:',
     options: {
-      A: 'Deeply disappointed.',
-      B: 'Emotionally frustrated.',
-      C: 'Completely heartbroken.',
-      D: 'Extremely overwhelmed.'
+      A: 'Filled with deep sadness and grief.',
+      B: 'Slightly confused.',
+      C: 'Very energetic.',
+      D: 'Annoyed by the noise.'
     },
-    correctAnswer: 'C',
-    explanation: 'Heartbroken means suffering from overwhelming distress, sorrow, or grief.',
+    correctAnswer: 'A',
+    explanation: 'Heartbroken means suffering from overwhelming sorrow, grief, or deep sadness.',
     marks: 1
   },
   {
     id: 22,
-    category: 'Idiom',
-    question: 'A student is afraid of admitting a serious mistake but finally gathers courage, accepts responsibility and apologizes. Which idiom best describes this decision?',
+    category: 'Idioms',
+    question: 'Going to the dentist was scary, but Omar decided to "Bite the bullet" and get his tooth fixed. This idiom means:',
     options: {
-      A: 'Easier said than done.',
-      B: 'Bite the bullet.',
-      C: 'In the long run.',
-      D: 'It slipped my mind.'
+      A: 'To eat something very hard.',
+      B: 'To face a tough situation bravely.',
+      C: 'To run away and hide.',
+      D: 'To argue with the doctor.'
     },
     correctAnswer: 'B',
-    explanation: 'To bite the bullet means to face a difficult situation with courage and resolve.',
+    explanation: 'To bite the bullet means to face an unavoidable, difficult situation with courage.',
     marks: 1
   },
   {
     id: 23,
-    category: 'Idiom',
-    question: 'A student spends an hour every day improving their English. The improvement may seem small initially, but the effort is expected to produce significant benefits over time. Which expression best completes the idea?',
+    category: 'Idioms',
+    question: 'Reading 15 minutes of English every day will help your vocabulary "In the long run". This idiom means:',
     options: {
-      A: 'In the long run.',
-      B: 'At the last minute.',
-      C: 'For the time being.',
-      D: 'Once in a while.'
+      A: 'Over a long period of time in the future.',
+      B: 'While running a fast race.',
+      C: 'Only for today.',
+      D: 'Never in your life.'
     },
     correctAnswer: 'A',
-    explanation: 'In the long run refers to a time over an extended period or in the ultimate outcome.',
+    explanation: 'In the long run means over a longer period of time or in the ultimate future.',
     marks: 1
   },
   {
     id: 24,
-    category: 'Idiom',
-    question: 'You promised to bring your notebook to class but accidentally forgot it. Which response is most appropriate?',
+    category: 'Idioms',
+    question: 'I promised to bring my friend’s book today, but "It slipped my mind". This means:',
     options: {
-      A: 'I was reluctant to bring my notebook.',
-      B: 'I was overwhelmed by my notebook.',
-      C: 'It completely slipped my mind.',
-      D: 'I decided to bite the bullet.'
+      A: 'I dropped the book on the floor.',
+      B: 'I did not want to return it.',
+      C: 'I completely forgot about it.',
+      D: 'I gave the book to another student.'
     },
     correctAnswer: 'C',
-    explanation: 'It slipped my mind is an idiom meaning you forgot about it completely.',
+    explanation: 'It slipped my mind is an everyday idiom meaning you forgot about it.',
     marks: 1
   },
   {
     id: 25,
-    category: 'Idiom',
-    question: 'Someone says, "Just stop worrying about every problem and stay positive." You reply that following this advice is difficult in real life, even though it sounds simple. Which expression best communicates your response?',
+    category: 'Idioms',
+    question: 'Someone said: "Just wake up at 5:00 AM every single morning!" You say that is "Easier said than done". This means:',
     options: {
-      A: 'Better late than never.',
-      B: 'Easier said than done.',
-      C: 'In the long run.',
-      D: 'Where there is a will, there is a way.'
+      A: 'It sounds simple to say, but is hard to actually do.',
+      B: 'It is very easy to do, but difficult to say.',
+      C: 'Nobody knows how to speak about it.',
+      D: 'It is easy to do in one second.'
     },
-    correctAnswer: 'B',
-    explanation: 'Easier said than done means an action that is easily talked about is harder to accomplish in practice.',
+    correctAnswer: 'A',
+    explanation: 'Easier said than done means something is easy to suggest or talk about, but difficult to practice.',
     marks: 1
   },
   {
     id: 26,
-    category: 'Idiom',
-    question: 'Three students are whispering, hiding their phones and suddenly stopping their conversation whenever their teacher approaches. The teacher suspects they:',
+    category: 'Idioms',
+    question: 'The two students are whispering quietly and hiding something behind their backs. The teacher thinks they are "Up to something". This means:',
     options: {
-      A: 'Have something unusual or possibly mischievous planned.',
-      B: 'Have forgotten something important about their lesson.',
-      C: 'Are reluctant to participate in the classroom discussion.',
-      D: 'Are trying to convince someone to change their opinion.'
+      A: 'They are secretly planning something playful or mischievous.',
+      B: 'They are doing their homework quietly.',
+      C: 'They are climbing up the school stairs.',
+      D: 'They are fast asleep at their desks.'
     },
     correctAnswer: 'A',
-    explanation: 'To be up to something means doing or planning something secretly or mischievous.',
+    explanation: 'To be up to something means doing or planning something in secret or being mischievous.',
     marks: 1
   },
   {
     id: 27,
-    category: 'Proverb',
-    question: 'A person repeatedly promises to help their elderly neighbour but never does anything. Another person rarely makes promises but consistently provides assistance. Which proverb best describes the second person\'s behaviour?',
+    category: 'Proverbs',
+    question: 'Raza always promises to help his friends but never does. Zain rarely talks, but always helps when needed. Which proverb describes Zain?',
     options: {
-      A: 'Practice Makes Perfect.',
-      B: 'Honesty Is the Best Policy.',
-      C: 'Actions Speak Louder Than Words.',
-      D: 'Better Late Than Never.'
+      A: 'Better late than never.',
+      B: 'Actions speak louder than words.',
+      C: 'Practice makes perfect.',
+      D: 'Time is money.'
     },
-    correctAnswer: 'C',
-    explanation: 'Actions speak louder than words means what you actually do has a stronger impact than what you say.',
+    correctAnswer: 'B',
+    explanation: 'Actions speak louder than words means what you actually do is much more meaningful than what you say.',
     marks: 1
   },
   {
     id: 28,
-    category: 'Proverb',
-    question: 'A student comes from a financially disadvantaged family but remains determined, finds available educational opportunities and works hard to become a successful doctor. Which proverb best describes this situation?',
+    category: 'Proverbs',
+    question: 'Mariam came from a poor background, but with strong determination and hard work, she became a doctor. Which proverb fits her story?',
     options: {
-      A: 'Don\'t Judge a Book by Its Cover.',
-      B: 'Where There Is a Will, There Is a Way.',
-      C: 'Practice Makes Perfect.',
-      D: 'Better Late Than Never.'
+      A: 'Where there is a will, there is a way.',
+      B: 'Don\'t cry over spilled milk.',
+      C: 'Better late than never.',
+      D: 'All that glitters is not gold.'
     },
-    correctAnswer: 'B',
-    explanation: 'Where there is a will, there is a way means if you are determined enough, you will find a way to achieve your goal.',
+    correctAnswer: 'A',
+    explanation: 'Where there is a will, there is a way means if you are determined enough, you will find a way to succeed.',
     marks: 1
   },
   {
     id: 29,
     category: 'Phrasal Verbs',
-    question: 'Choose the correct sequence to complete the sentence: "Every morning, I ______ at 6 o\'clock, ______ out of bed, ______ the bedroom light and ______ my school uniform."',
+    question: 'Choose the correct sequence: "Every morning, I ______ at 7:00 AM, ______ of bed, ______ the bathroom light, and ______ my school uniform."',
     options: {
-      A: 'Get up, wake up, turn off, take off.',
-      B: 'Wake up, get up, turn on, put on.',
-      C: 'Wake up, stand up, turn off, pick up.',
-      D: 'Get up, sit down, turn on, put on.'
+      A: 'wake up, get out, turn on, put on',
+      B: 'get up, sleep, turn off, take off',
+      C: 'wake up, stand, turn off, throw',
+      D: 'sit down, get out, switch, pick'
     },
-    correctAnswer: 'B',
-    explanation: 'Wake up (cease sleeping), get up (rise from bed), turn on (activate lights), put on (dress in uniform).',
+    correctAnswer: 'A',
+    explanation: 'Wake up (stop sleeping), get out (leave bed), turn on (switch on light), put on (wear clothes).',
     marks: 1
   },
   {
     id: 30,
-    category: 'Proverb',
-    question: 'A person sees a quiet student and immediately assumes that the student is unintelligent. After working with them, they discover that the student is exceptionally knowledgeable and talented. Which proverb best describes the lesson?',
+    category: 'Proverbs',
+    question: 'The old book had a plain and dusty cover, but the story inside was fantastic. Which proverb teaches us this lesson?',
     options: {
-      A: 'Actions Speak Louder Than Words.',
-      B: 'Honesty Is the Best Policy.',
-      C: 'Don\'t Judge a Book by Its Cover.',
-      D: 'Better Late Than Never.'
+      A: 'Honesty is the best policy.',
+      B: 'Practice makes perfect.',
+      C: 'Don\'t judge a book by its cover.',
+      D: 'Better safe than sorry.'
     },
     correctAnswer: 'C',
-    explanation: 'Don\'t judge a book by its cover means one should not judge the worth or character of something or someone merely by appearance.',
+    explanation: 'Don\'t judge a book by its cover means you should not judge the true value of someone or something by appearance alone.',
     marks: 1
   }
 ];
