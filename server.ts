@@ -79,7 +79,8 @@ const state: ServerState = {
     totalDurationSeconds: DEFAULT_EXAM_METADATA.durationMinutes * 60,
     leaderboardRevealed: false,
     solutionsRevealed: false,
-    createdAt: Date.now()
+    createdAt: Date.now(),
+    examInstanceId: 'inst_initial'
   },
   questions: JSON.parse(JSON.stringify(DEFAULT_QUESTIONS)),
   answerKey: { ...ANSWER_KEY },
@@ -380,7 +381,8 @@ app.post('/api/student/join', (req, res) => {
     answers: {},
     answeredCount: 0,
     progressPercentage: 0,
-    submissionStatus: state.exam.status === 'active' ? 'answering' : 'waiting'
+    submissionStatus: state.exam.status === 'active' ? 'answering' : 'waiting',
+    examInstanceId: state.exam.examInstanceId || 'inst_initial'
   };
 
   state.sessions.set(sessionId, newSession);
@@ -613,6 +615,7 @@ app.post('/api/admin/exam/reset', async (req, res) => {
   state.exam.leaderboardRevealed = false;
   state.exam.solutionsRevealed = false;
   state.exam.resetAt = Date.now();
+  state.exam.examInstanceId = 'inst_' + Date.now();
   syncExamToFirestore(state.exam);
 
   // Clear Firestore sessions collection for this exam

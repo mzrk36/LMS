@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Navbar } from './components/Navbar';
 import { StudentPortal } from './components/StudentPortal';
 import { ExamInterface } from './components/ExamInterface';
@@ -7,6 +7,7 @@ import { LeaderboardView } from './components/LeaderboardView';
 import { AdminLogin } from './components/AdminLogin';
 import { AdminDashboard } from './components/AdminDashboard';
 import { SupabaseConfigModal } from './components/SupabaseConfigModal';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { api } from './services/api';
 import { Exam, StudentSession, Question, LeaderboardEntry, HistoricalExam, QuestionOption } from './types/exam';
 
@@ -80,24 +81,29 @@ export function App() {
       if (savedSessionId) {
         try {
           const sessData = await api.getSession(savedSessionId);
-          const isExpiredByReset = data.exam.resetAt && sessData.session.joinedAt < data.exam.resetAt;
+          const isOldInstance = data.exam.examInstanceId && sessData.session?.examInstanceId && sessData.session.examInstanceId !== data.exam.examInstanceId;
           
-          if (isExpiredByReset || (data.exam.status === 'waiting' && sessData.session.submissionStatus === 'submitted')) {
+          if ((isOldInstance && data.exam.status === 'waiting') || (data.exam.status === 'waiting' && sessData.session?.submissionStatus === 'submitted')) {
             // Discard previous or concluded session so student enters name fresh
             localStorage.removeItem('genzomate_student_session_id');
+            localStorage.removeItem('genzomate_student_session_data');
             setStudentSession(null);
           } else {
             setStudentSession(sessData.session);
-            if (sessData.session.submissionStatus === 'submitted') {
+            if (sessData.session?.submissionStatus === 'submitted') {
               if (currentRoute === '/exam') {
                 navigate('/results');
               }
             }
           }
         } catch {
-          // Stale session
-          localStorage.removeItem('genzomate_student_session_id');
-          setStudentSession(null);
+          // Never log out a student during active exam due to network glitch
+          const cached = localStorage.getItem('genzomate_student_session_data');
+          if (cached) {
+            try {
+              setStudentSession(JSON.parse(cached));
+            } catch {}
+          }
         }
       } else {
         setStudentSession(null);
@@ -107,38 +113,65 @@ export function App() {
     }
   }, [currentRoute, navigate]);
 
-  // Fetch teacher monitor data
-  const loadTeacherData = useCallback(async () => {
-    if (!isTeacherAuthenticated) return;
-    try {
-      const [monitorData, resultsData, historyData] = await Promise.all([
-        api.getMonitorData(),
-        api.getAdminResults().catch(() => ({ leaderboard: [], sessions: [], exam: null })),
-        api.getHistory().catch(() => ({ history: [] }))
-      ]);
+  const isFetchingTeacherDataRef = useRef(false);
 
-      setAdminStats(monitorData.stats);
-      setAdminSessions(monitorData.sessions);
-      setAdminQuestions(monitorData.questions);
-      setLeaderboard(resultsData.leaderboard || []);
-      setHistory(historyData.history || []);
-      if (monitorData.exam) {
-        setExam(monitorData.exam);
-        setServerRemainingSeconds(monitorData.exam.remainingSeconds);
+  // Fetch teacher monitor data with in-flight lock & stable updates (prevents blinking)
+  const loadTeacherData = useCallback(async () => {
+    if (!isTeacherAuthenticated || isFetchingTeacherDataRef.current) return;
+    isFetchingTeacherDataRef.current = true;
+    try {
+      const monitorData = await api.getMonitorData();
+
+      if (monitorData) {
+        if (monitorData.stats) {
+          setAdminStats(monitorData.stats);
+        }
+
+        if (monitorData.sessions) {
+          setAdminSessions((prev) => {
+            if (prev.length !== monitorData.sessions.length) {
+              return monitorData.sessions;
+            }
+            const hasChanges = monitorData.sessions.some((s, idx) => {
+              const p = prev[idx];
+              return (
+                !p ||
+                p.sessionId !== s.sessionId ||
+                p.answeredCount !== s.answeredCount ||
+                p.submissionStatus !== s.submissionStatus ||
+                p.connectionStatus !== s.connectionStatus
+              );
+            });
+            return hasChanges ? monitorData.sessions : prev;
+          });
+        }
+
+        if (monitorData.questions && monitorData.questions.length > 0) {
+          setAdminQuestions(monitorData.questions);
+        }
+
+        if (monitorData.exam) {
+          setExam((prev) => (prev ? { ...prev, ...monitorData.exam } : monitorData.exam));
+          if (monitorData.exam.remainingSeconds !== undefined) {
+            setServerRemainingSeconds(monitorData.exam.remainingSeconds);
+          }
+        }
       }
     } catch (err) {
-      console.error('[App] Failed to load teacher data', err);
+      console.warn('[App] Teacher data load notice:', err);
+    } finally {
+      isFetchingTeacherDataRef.current = false;
     }
   }, [isTeacherAuthenticated]);
 
-  // Active 2.5s fast auto-polling for teacher view (guarantees candidate sync even across serverless/Vercel)
+  // Smooth 3.5s auto-polling for teacher view (prevents blinking and rapid UI thrashing)
   useEffect(() => {
     if (!isTeacherAuthenticated || !currentRoute.startsWith('/admin')) return;
 
     loadTeacherData();
     const interval = setInterval(() => {
       loadTeacherData();
-    }, 2500);
+    }, 3500);
 
     return () => clearInterval(interval);
   }, [isTeacherAuthenticated, currentRoute, loadTeacherData]);
@@ -391,6 +424,7 @@ export function App() {
 
       {/* Main View Router */}
       <main className="flex-1">
+        <ErrorBoundary>
         
         {/* Route: / — Student Portal */}
         {currentRoute === '/' && (
@@ -506,6 +540,7 @@ export function App() {
           )
         )}
 
+        </ErrorBoundary>
       </main>
 
       {/* Database & Architecture Modal */}

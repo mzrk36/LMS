@@ -152,10 +152,12 @@ class ExaminationApiService {
       answers: {},
       answeredCount: 0,
       progressPercentage: 0,
-      submissionStatus: this.cachedExam.status === 'active' ? 'answering' : 'waiting'
+      submissionStatus: this.cachedExam.status === 'active' ? 'answering' : 'waiting',
+      examInstanceId: this.cachedExam.examInstanceId || 'inst_initial'
     };
 
     localStorage.setItem('genzomate_student_session_id', sessionId);
+    localStorage.setItem('genzomate_student_session_data', JSON.stringify(newSession));
     localStorage.setItem(`session_${sessionId}`, JSON.stringify(newSession));
 
     // Sync to Firestore if available
@@ -172,15 +174,22 @@ class ExaminationApiService {
     try {
       const res = await fetch(`/api/student/session/${sessionId}`);
       if (res.ok) {
-        return await res.json();
+        const data = await res.json();
+        if (data.session) {
+          localStorage.setItem('genzomate_student_session_data', JSON.stringify(data.session));
+          return data;
+        }
       }
     } catch (e) {
       console.warn('[API] /api/student/session fallback to local cache:', e);
     }
 
-    const localData = localStorage.getItem(`session_${sessionId}`);
+    const localData = localStorage.getItem(`session_${sessionId}`) || localStorage.getItem('genzomate_student_session_data');
     if (localData) {
-      return { session: JSON.parse(localData), exam: this.cachedExam };
+      try {
+        const sess = JSON.parse(localData);
+        return { session: sess, exam: this.cachedExam };
+      } catch {}
     }
 
     // Default minimal session
@@ -194,7 +203,8 @@ class ExaminationApiService {
       answers: {},
       answeredCount: 0,
       progressPercentage: 0,
-      submissionStatus: 'waiting'
+      submissionStatus: 'waiting',
+      examInstanceId: this.cachedExam.examInstanceId || 'inst_initial'
     };
     return { session: fallbackSession, exam: this.cachedExam };
   }
@@ -394,9 +404,9 @@ class ExaminationApiService {
         const snap = await getDocs(collection(db, 'exams', 'genzomate-eng-001', 'sessions'));
         snap.forEach(docSnap => {
           const s = docSnap.data() as StudentSession;
-          if (s && s.sessionId && !s.expired) {
-            // Check if older than resetAt
-            if (currentExam.resetAt && s.joinedAt && s.joinedAt < currentExam.resetAt) {
+          if (s && s.sessionId && !s.expired && Boolean(s.studentName)) {
+            // Only include sessions matching the current exam instance
+            if (currentExam.examInstanceId && s.examInstanceId && s.examInstanceId !== currentExam.examInstanceId) {
               return;
             }
             const existing = sessionMap.get(s.sessionId);

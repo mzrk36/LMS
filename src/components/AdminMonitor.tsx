@@ -71,15 +71,16 @@ export const AdminMonitor: React.FC<AdminMonitorProps> = ({
     }
   };
 
-  const formatRemainingTime = (seconds: number) => {
-    const mins = Math.floor(Math.max(0, seconds) / 60);
-    const secs = Math.max(0, seconds) % 60;
+  const formatRemainingTime = (seconds?: number) => {
+    const s = typeof seconds === 'number' && !isNaN(seconds) ? seconds : 1800;
+    const mins = Math.floor(Math.max(0, s) / 60);
+    const secs = Math.max(0, s) % 60;
     return `${mins}m ${secs}s`;
   };
 
-  const filteredSessions = sessions.filter(s =>
-    s.studentName.toLowerCase().includes(filterText.toLowerCase()) ||
-    s.sessionId.toLowerCase().includes(filterText.toLowerCase())
+  const filteredSessions = (sessions || []).filter(s =>
+    (s?.studentName || '').toLowerCase().includes(filterText.toLowerCase()) ||
+    (s?.sessionId || '').toLowerCase().includes(filterText.toLowerCase())
   );
 
   return (
@@ -492,7 +493,7 @@ export const AdminMonitor: React.FC<AdminMonitorProps> = ({
             </h4>
             <div className="grid grid-cols-5 sm:grid-cols-6 gap-2 mb-6">
               {questions.map((q, idx) => {
-                const ans = inspectingSession.answers[q.id];
+                const ans = inspectingSession.answers ? inspectingSession.answers[q.id] : undefined;
                 return (
                   <div
                     key={q.id}

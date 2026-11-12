@@ -32,6 +32,7 @@ export interface Exam {
   createdAt: number;
   endedAt?: number;
   resetAt?: number;
+  examInstanceId?: string;
 }
 
 export interface StudentSession {
@@ -53,6 +54,7 @@ export interface StudentSession {
   incorrectCount?: number;
   unansweredCount?: number;
   expired?: boolean;
+  examInstanceId?: string;
 }
 
 export interface LeaderboardEntry {
