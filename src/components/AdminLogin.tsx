@@ -8,8 +8,8 @@ interface AdminLoginProps {
 }
 
 export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onLoginApi, onBackToStudentPortal }) => {
-  const [password, setPassword] = useState('genzomate2026');
-  const [email, setEmail] = useState('muhammedmuzamiljaan@gmail.com');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -78,7 +78,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onLoginA
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="muhammedmuzamiljaan@gmail.com"
+              placeholder="e.g. muhammedmuzamiljaan@gmail.com"
               className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#28AF60] text-sm text-slate-900 font-medium"
             />
           </div>
@@ -98,16 +98,6 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onLoginA
               />
               <KeyRound className="w-4 h-4 text-slate-400 absolute right-3 top-3.5" />
             </div>
-          </div>
-
-          <div className="bg-[#EAF7F0] border border-[#28AF60]/20 rounded-xl p-3 text-xs text-[#0F4C2A]">
-            <div className="font-bold flex items-center gap-1.5 mb-1">
-              <UserCheck className="w-4 h-4 text-[#28AF60]" />
-              <span>Teacher Master Password:</span>
-            </div>
-            <p className="text-slate-600">
-              Password: <code className="bg-white px-1.5 py-0.5 rounded font-mono font-bold text-slate-800">genzomate2026</code>
-            </p>
           </div>
 
           <button

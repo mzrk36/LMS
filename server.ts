@@ -1,5 +1,4 @@
 import express from 'express';
-import { createServer as createViteServer } from 'vite';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
@@ -13,15 +12,40 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 
 app.use(express.json());
+
+// Enable CORS for universal frontend access
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
+// Normalize request URL for serverless platforms (e.g. Vercel) where /api prefix might be stripped
+app.use((req, res, next) => {
+  if (!req.url.startsWith('/api') && req.url !== '/' && !req.url.startsWith('/assets') && !req.url.includes('.')) {
+    req.url = '/api' + (req.url.startsWith('/') ? req.url : '/' + req.url);
+  }
+  next();
+});
 
 // Initialize Firebase Firestore from provisioned config
 let firestoreDb: any = null;
 let firestoreConfig: any = null;
 try {
-  const configPath = path.resolve(__dirname, 'firebase-applet-config.json');
+  let configPath = path.resolve(__dirname, 'firebase-applet-config.json');
+  if (!fs.existsSync(configPath)) {
+    configPath = path.resolve(process.cwd(), 'firebase-applet-config.json');
+  }
+  if (!fs.existsSync(configPath)) {
+    configPath = path.resolve(__dirname, '..', 'firebase-applet-config.json');
+  }
   if (fs.existsSync(configPath)) {
     firestoreConfig = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
     const fbApp = getApps().length > 0 ? getApps()[0] : initializeApp(firestoreConfig);
@@ -676,6 +700,7 @@ async function startServer() {
         res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
       });
     } else {
+      const { createServer: createViteServer } = await import('vite');
       const vite = await createViteServer({
         server: { middlewareMode: true },
         appType: 'spa'
