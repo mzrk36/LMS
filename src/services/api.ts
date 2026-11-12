@@ -257,22 +257,35 @@ class ExaminationApiService {
   }
 
   async submitExam(sessionId: string): Promise<{ session: StudentSession }> {
+    const localData = localStorage.getItem(`session_${sessionId}`) || localStorage.getItem('genzomate_student_session_data');
+    let cachedSession: StudentSession | null = null;
+    if (localData) {
+      try { cachedSession = JSON.parse(localData); } catch {}
+    }
+
     try {
       const res = await fetch('/api/student/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId })
+        body: JSON.stringify({ sessionId, session: cachedSession })
       });
-      if (res.ok) return await res.json();
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.session) {
+          localStorage.setItem(`session_${sessionId}`, JSON.stringify(data.session));
+          localStorage.setItem('genzomate_student_session_data', JSON.stringify(data.session));
+          localStorage.setItem('genzomate_student_session_id', data.session.sessionId);
+          return data;
+        }
+      }
     } catch (e) {
       console.warn('[API] /api/student/submit fallback to local evaluator:', e);
     }
 
     // Local evaluation fallback
-    const localData = localStorage.getItem(`session_${sessionId}`);
     let sess: StudentSession;
-    if (localData) {
-      sess = JSON.parse(localData);
+    if (cachedSession) {
+      sess = { ...cachedSession };
     } else {
       sess = {
         sessionId,
@@ -314,6 +327,9 @@ class ExaminationApiService {
     sess.submittedAt = Date.now();
 
     localStorage.setItem(`session_${sessionId}`, JSON.stringify(sess));
+    localStorage.setItem('genzomate_student_session_data', JSON.stringify(sess));
+    localStorage.setItem('genzomate_student_session_id', sess.sessionId);
+
     if (db) {
       setDoc(doc(db, 'exams', 'genzomate-eng-001', 'submissions', sessionId), sess).catch(() => {});
     }
@@ -382,22 +398,33 @@ class ExaminationApiService {
     let serverStats: any = null;
     let currentExam = this.cachedExam;
 
-    // 1. Try server endpoint
+    // 1. Authoritative server endpoint (backed by server-side Firestore sync)
     try {
       const res = await fetch('/api/admin/monitor');
       if (res.ok) {
         const data = await res.json();
-        serverSessions = data.sessions || [];
-        serverStats = data.stats;
-        if (data.exam) currentExam = data.exam;
+        if (data && data.sessions) {
+          if (data.exam) this.cachedExam = { ...this.cachedExam, ...data.exam };
+          return {
+            stats: data.stats || {
+              totalJoined: data.sessions.length,
+              currentlyAttempting: data.sessions.filter((s: StudentSession) => s.submissionStatus === 'answering').length,
+              submitted: data.sessions.filter((s: StudentSession) => s.submissionStatus === 'submitted').length,
+              waiting: data.sessions.filter((s: StudentSession) => s.submissionStatus === 'waiting').length,
+              disconnected: data.sessions.filter((s: StudentSession) => s.connectionStatus === 'offline').length
+            },
+            exam: data.exam || this.cachedExam,
+            sessions: data.sessions,
+            questions: data.questions || []
+          };
+        }
       }
     } catch (e) {
-      // serverless fallback
+      console.warn('[API] /api/admin/monitor fallback to direct client query:', e);
     }
 
-    // 2. Query Firestore directly for instant candidate presence
+    // 2. Client-side fallback if server is unreachable
     const sessionMap = new Map<string, StudentSession>();
-    serverSessions.forEach(s => sessionMap.set(s.sessionId, s));
 
     if (db) {
       try {
@@ -409,8 +436,11 @@ class ExaminationApiService {
             if (currentExam.examInstanceId && s.examInstanceId && s.examInstanceId !== currentExam.examInstanceId) {
               return;
             }
+            if (currentExam.resetAt && s.joinedAt && s.joinedAt < currentExam.resetAt) {
+              return;
+            }
             const existing = sessionMap.get(s.sessionId);
-            if (!existing || (s.lastActive && s.lastActive >= (existing.lastActive || 0))) {
+            if (!existing || ((s.lastActive || 0) >= (existing.lastActive || 0))) {
               sessionMap.set(s.sessionId, s);
             }
           }
@@ -420,7 +450,7 @@ class ExaminationApiService {
       }
     }
 
-    const mergedSessions = Array.from(sessionMap.values());
+    const mergedSessions = Array.from(sessionMap.values()).sort((a, b) => (a.joinedAt || 0) - (b.joinedAt || 0));
     const now = Date.now();
 
     // Mark inactive if > 60s
@@ -436,9 +466,7 @@ class ExaminationApiService {
     const waiting = mergedSessions.filter(s => s.submissionStatus === 'waiting').length;
     const disconnected = mergedSessions.filter(s => s.connectionStatus === 'offline').length;
 
-    const stats = serverStats && serverSessions.length >= mergedSessions.length
-      ? serverStats
-      : { totalJoined, currentlyAttempting, submitted, waiting, disconnected };
+    const stats = { totalJoined, currentlyAttempting, submitted, waiting, disconnected };
 
     return {
       stats,

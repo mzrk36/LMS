@@ -393,8 +393,17 @@ app.post('/api/student/join', (req, res) => {
 });
 
 // Get student session state
-app.get('/api/student/session/:sessionId', (req, res) => {
-  const session = state.sessions.get(req.params.sessionId);
+app.get('/api/student/session/:sessionId', async (req, res) => {
+  let session = state.sessions.get(req.params.sessionId);
+  if (!session && firestoreDb) {
+    try {
+      const snap = await getDoc(doc(firestoreDb, 'exams', state.exam.id, 'sessions', req.params.sessionId));
+      if (snap.exists()) {
+        session = snap.data() as StudentSession;
+        state.sessions.set(session.sessionId, session);
+      }
+    } catch (e) {}
+  }
   if (!session) {
     return res.status(404).json({ error: 'Session not found' });
   }
@@ -404,9 +413,18 @@ app.get('/api/student/session/:sessionId', (req, res) => {
 });
 
 // Student answers a question
-app.post('/api/student/answer', (req, res) => {
+app.post('/api/student/answer', async (req, res) => {
   const { sessionId, questionId, option } = req.body;
-  const session = state.sessions.get(sessionId);
+  let session = state.sessions.get(sessionId);
+  if (!session && firestoreDb) {
+    try {
+      const snap = await getDoc(doc(firestoreDb, 'exams', state.exam.id, 'sessions', sessionId));
+      if (snap.exists()) {
+        session = snap.data() as StudentSession;
+        state.sessions.set(session.sessionId, session);
+      }
+    } catch (e) {}
+  }
   if (!session) return res.status(404).json({ error: 'Session not found' });
 
   if (state.exam.status !== 'active') {
@@ -429,9 +447,18 @@ app.post('/api/student/answer', (req, res) => {
 });
 
 // Student navigates between questions
-app.post('/api/student/navigate', (req, res) => {
+app.post('/api/student/navigate', async (req, res) => {
   const { sessionId, questionIndex } = req.body;
-  const session = state.sessions.get(sessionId);
+  let session = state.sessions.get(sessionId);
+  if (!session && firestoreDb) {
+    try {
+      const snap = await getDoc(doc(firestoreDb, 'exams', state.exam.id, 'sessions', sessionId));
+      if (snap.exists()) {
+        session = snap.data() as StudentSession;
+        state.sessions.set(session.sessionId, session);
+      }
+    } catch (e) {}
+  }
   if (!session) return res.status(404).json({ error: 'Session not found' });
 
   session.currentQuestionIndex = Number(questionIndex);
@@ -442,9 +469,25 @@ app.post('/api/student/navigate', (req, res) => {
 });
 
 // Student submits exam
-app.post('/api/student/submit', (req, res) => {
+app.post('/api/student/submit', async (req, res) => {
   const { sessionId } = req.body;
-  const session = state.sessions.get(sessionId);
+  let session = state.sessions.get(sessionId);
+  if (!session && firestoreDb) {
+    try {
+      const snap = await getDoc(doc(firestoreDb, 'exams', state.exam.id, 'sessions', sessionId));
+      if (snap.exists()) {
+        session = snap.data() as StudentSession;
+        state.sessions.set(session.sessionId, session);
+      }
+    } catch (e) {}
+  }
+
+  // If still not in memory/Firestore, restore from client provided session payload
+  if (!session && req.body.session) {
+    session = req.body.session;
+    state.sessions.set(sessionId, session!);
+  }
+
   if (!session) return res.status(404).json({ error: 'Session not found' });
 
   evaluateStudentSubmission(session);
@@ -496,13 +539,18 @@ app.get('/api/admin/monitor', async (req, res) => {
       const snap = await getDocs(collection(firestoreDb, 'exams', state.exam.id, 'sessions'));
       snap.forEach(docSnap => {
         const s = docSnap.data() as StudentSession;
-        if (s && s.sessionId && !s.expired) {
+        if (s && s.sessionId && !s.expired && Boolean(s.studentName)) {
+          // If instanceId is configured, only include matching instance
+          if (state.exam.examInstanceId && s.examInstanceId && s.examInstanceId !== state.exam.examInstanceId) {
+            return;
+          }
           // If exam has resetAt, ignore older sessions
           if (state.exam.resetAt && s.joinedAt && s.joinedAt < state.exam.resetAt) {
             return;
           }
           const existing = state.sessions.get(s.sessionId);
-          if (!existing || (s.lastActive && s.lastActive >= (existing.lastActive || 0))) {
+          // Only update memory if no existing session or Firestore has strictly newer lastActive
+          if (!existing || ((s.lastActive || 0) > (existing.lastActive || 0))) {
             state.sessions.set(s.sessionId, s);
           }
         }
@@ -512,12 +560,21 @@ app.get('/api/admin/monitor', async (req, res) => {
     }
   }
 
-  const sessions = Array.from(state.sessions.values());
+  // Filter valid active sessions matching current exam instance and sort deterministically
+  const sessions = Array.from(state.sessions.values())
+    .filter(s => {
+      if (!s || !s.sessionId || s.expired || !s.studentName) return false;
+      if (state.exam.examInstanceId && s.examInstanceId && s.examInstanceId !== state.exam.examInstanceId) return false;
+      if (state.exam.resetAt && s.joinedAt && s.joinedAt < state.exam.resetAt) return false;
+      return true;
+    })
+    .sort((a, b) => (a.joinedAt || 0) - (b.joinedAt || 0));
+
   const now = Date.now();
 
   // Mark sessions inactive if no ping in 60s
   sessions.forEach(s => {
-    if (s.submissionStatus !== 'submitted' && now - s.lastActive > 60000) {
+    if (s.submissionStatus !== 'submitted' && now - (s.lastActive || 0) > 60000) {
       s.connectionStatus = 'offline';
     }
   });

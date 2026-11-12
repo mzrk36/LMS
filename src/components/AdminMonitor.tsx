@@ -78,10 +78,12 @@ export const AdminMonitor: React.FC<AdminMonitorProps> = ({
     return `${mins}m ${secs}s`;
   };
 
-  const filteredSessions = (sessions || []).filter(s =>
-    (s?.studentName || '').toLowerCase().includes(filterText.toLowerCase()) ||
-    (s?.sessionId || '').toLowerCase().includes(filterText.toLowerCase())
-  );
+  const filteredSessions = (sessions || [])
+    .filter(s =>
+      (s?.studentName || '').toLowerCase().includes(filterText.toLowerCase()) ||
+      (s?.sessionId || '').toLowerCase().includes(filterText.toLowerCase())
+    )
+    .sort((a, b) => (a.joinedAt || 0) - (b.joinedAt || 0));
 
   return (
     <div className="space-y-6">

@@ -81,19 +81,18 @@ export function App() {
       if (savedSessionId) {
         try {
           const sessData = await api.getSession(savedSessionId);
-          const isOldInstance = data.exam.examInstanceId && sessData.session?.examInstanceId && sessData.session.examInstanceId !== data.exam.examInstanceId;
+          const isOldInstance = Boolean(data.exam.examInstanceId && sessData.session?.examInstanceId && sessData.session.examInstanceId !== data.exam.examInstanceId);
           
-          if ((isOldInstance && data.exam.status === 'waiting') || (data.exam.status === 'waiting' && sessData.session?.submissionStatus === 'submitted')) {
-            // Discard previous or concluded session so student enters name fresh
+          if (isOldInstance && currentRoute === '/') {
+            // Discard previous session only when student returns to root lobby for a new test instance
             localStorage.removeItem('genzomate_student_session_id');
             localStorage.removeItem('genzomate_student_session_data');
             setStudentSession(null);
-          } else {
+          } else if (sessData.session) {
             setStudentSession(sessData.session);
-            if (sessData.session?.submissionStatus === 'submitted') {
-              if (currentRoute === '/exam') {
-                navigate('/results');
-              }
+            localStorage.setItem('genzomate_student_session_data', JSON.stringify(sessData.session));
+            if (sessData.session.submissionStatus === 'submitted' && currentRoute === '/exam') {
+              navigate('/results');
             }
           }
         } catch {
@@ -132,16 +131,23 @@ export function App() {
             if (prev.length !== monitorData.sessions.length) {
               return monitorData.sessions;
             }
-            const hasChanges = monitorData.sessions.some((s, idx) => {
-              const p = prev[idx];
-              return (
+            const prevMap = new Map(prev.map(p => [p.sessionId, p]));
+            let hasChanges = false;
+            for (const s of monitorData.sessions) {
+              const p = prevMap.get(s.sessionId);
+              if (
                 !p ||
-                p.sessionId !== s.sessionId ||
                 p.answeredCount !== s.answeredCount ||
+                p.currentQuestionIndex !== s.currentQuestionIndex ||
                 p.submissionStatus !== s.submissionStatus ||
-                p.connectionStatus !== s.connectionStatus
-              );
-            });
+                p.connectionStatus !== s.connectionStatus ||
+                p.score !== s.score ||
+                p.studentName !== s.studentName
+              ) {
+                hasChanges = true;
+                break;
+              }
+            }
             return hasChanges ? monitorData.sessions : prev;
           });
         }
@@ -337,8 +343,17 @@ export function App() {
 
   const handleSubmitExam = async () => {
     if (!studentSession) return;
-    const res = await api.submitExam(studentSession.sessionId);
-    setStudentSession(res.session);
+    try {
+      const res = await api.submitExam(studentSession.sessionId);
+      if (res && res.session) {
+        setStudentSession(res.session);
+        localStorage.setItem('genzomate_student_session_id', res.session.sessionId);
+        localStorage.setItem('genzomate_student_session_data', JSON.stringify(res.session));
+        localStorage.setItem(`session_${res.session.sessionId}`, JSON.stringify(res.session));
+      }
+    } catch (err) {
+      console.warn('[App] submitExam notice:', err);
+    }
     navigate('/results');
   };
 
@@ -463,10 +478,17 @@ export function App() {
         )}
 
         {/* Route: /results — Student Results Card */}
-        {currentRoute === '/results' && (
-          studentSession ? (
+        {currentRoute === '/results' && (() => {
+          const effectiveSession = studentSession || (() => {
+            try {
+              const raw = localStorage.getItem('genzomate_student_session_data');
+              return raw ? JSON.parse(raw) : null;
+            } catch { return null; }
+          })();
+
+          return effectiveSession ? (
             <StudentResults
-              session={studentSession}
+              session={effectiveSession}
               exam={exam}
               questions={questions}
               onGoToLeaderboard={() => navigate('/leaderboard')}
@@ -478,8 +500,8 @@ export function App() {
                 Go to Portal
               </button>
             </div>
-          )
-        )}
+          );
+        })()}
 
         {/* Route: /leaderboard — Public Leaderboard */}
         {currentRoute === '/leaderboard' && (
